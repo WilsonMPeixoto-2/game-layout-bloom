@@ -13,18 +13,20 @@ import {
 } from './types';
 import '../styles/heroi-kiosk.css';
 
-import bgDystopia from '../assets/bg-dystopia.jpg';
-import bgLab from '../assets/bg-lab.jpg';
-import bgRepair from '../assets/bg-repair.jpg';
-import bgReborn from '../assets/bg-reborn.jpg';
+import bgAttract from '../assets/bg-attract.jpg';
+import bgIntro from '../assets/bg-intro.jpg';
+import bgAvatar from '../assets/bg-avatar.jpg';
+import bgToolkit from '../assets/bg-toolkit.jpg';
+import bgRepair from '../assets/bg-repair-fantasy.jpg';
+import bgResult from '../assets/bg-result.jpg';
 
 const SCENE_BG: Record<ScreenId, string> = {
-  ATTRACT: bgDystopia,
-  INTRO: bgDystopia,
-  AVATAR: bgLab,
-  TOOLKIT: bgLab,
+  ATTRACT: bgAttract,
+  INTRO: bgIntro,
+  AVATAR: bgAvatar,
+  TOOLKIT: bgToolkit,
   REPAIR: bgRepair,
-  RESULT: bgReborn,
+  RESULT: bgResult,
 };
 
 const sceneTransition = {
