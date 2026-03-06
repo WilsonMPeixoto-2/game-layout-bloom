@@ -29,8 +29,8 @@ const SCENE_BG: Record<ScreenId, string> = {
 
 const sceneTransition = {
   initial: { opacity: 0, scale: 1.05 },
-  animate: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
-  exit: { opacity: 0, scale: 0.95, transition: { duration: 0.4, ease: 'easeIn' } },
+  animate: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const } },
+  exit: { opacity: 0, scale: 0.95, transition: { duration: 0.4, ease: 'easeIn' as const } },
 };
 
 function stepLabel(s: ScreenId) {
