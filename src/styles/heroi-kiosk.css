@@ -13,7 +13,7 @@
   --ok: #45cf78;
 }
 
-body[data-theme='clean'] {
+.heroi-root[data-theme='clean'] {
   --bg: #14181f;
   --bg-2: #2b323d;
   --panel: rgba(20, 24, 31, 0.86);
@@ -24,7 +24,7 @@ body[data-theme='clean'] {
   --secondary: #ffcc7a;
 }
 
-body[data-theme='comic'] {
+.heroi-root[data-theme='comic'] {
   --bg: #1c1120;
   --bg-2: #4a2052;
   --panel: rgba(35, 16, 42, 0.84);
