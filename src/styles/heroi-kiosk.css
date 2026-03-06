@@ -1,0 +1,669 @@
+/* ===== HEROI KIOSK — Style System (copied from repo) ===== */
+
+:root {
+  --bg: #050f1d;
+  --bg-2: #0f2f4f;
+  --panel: rgba(8, 24, 43, 0.78);
+  --line: rgba(109, 194, 246, 0.28);
+  --text: #ecf8ff;
+  --muted: #a2c8dd;
+  --primary: #2de2e6;
+  --secondary: #f5cb5c;
+  --danger: #ff6464;
+  --ok: #45cf78;
+}
+
+body[data-theme='clean'] {
+  --bg: #14181f;
+  --bg-2: #2b323d;
+  --panel: rgba(20, 24, 31, 0.86);
+  --line: rgba(164, 188, 212, 0.3);
+  --text: #f2f6fa;
+  --muted: #b4c3d2;
+  --primary: #9bd2ff;
+  --secondary: #ffcc7a;
+}
+
+body[data-theme='comic'] {
+  --bg: #1c1120;
+  --bg-2: #4a2052;
+  --panel: rgba(35, 16, 42, 0.84);
+  --line: rgba(255, 189, 240, 0.34);
+  --text: #fff2ff;
+  --muted: #f3c8f3;
+  --primary: #ff66c4;
+  --secondary: #ffe96b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.heroi-root {
+  font-family: 'Bahnschrift', 'Segoe UI', sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 15% 12%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 32%),
+    radial-gradient(circle at 82% 24%, color-mix(in srgb, var(--secondary) 16%, transparent), transparent 30%),
+    linear-gradient(160deg, var(--bg), var(--bg-2));
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.heroi-root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: 0.4;
+}
+
+.app-shell {
+  width: min(1220px, 96vw);
+  margin: 14px auto;
+  display: grid;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+}
+
+.topbar {
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
+  letter-spacing: 0.05em;
+  color: var(--primary);
+  font-family: 'BankGothic Md BT', 'Bahnschrift', sans-serif;
+}
+
+.brand p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.87rem;
+}
+
+.hud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.badge {
+  padding: 8px 10px;
+  border-radius: 11px;
+  border: 1px solid var(--line);
+  background: rgba(8, 26, 47, 0.64);
+}
+
+.badge small {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  display: block;
+}
+
+.timer span {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.timer.danger {
+  border-color: var(--danger);
+  color: #ffd1d1;
+  animation: pulse 0.8s infinite;
+}
+
+@keyframes pulse {
+  50% {
+    box-shadow: 0 0 0 9px rgba(255, 100, 100, 0);
+  }
+}
+
+.energy .track {
+  margin-top: 5px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.energy .track i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  transition: width 0.3s ease;
+}
+
+.hud-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.mini-btn {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--primary) 25%, #0b2c4a);
+  color: var(--text);
+  padding: 8px 10px;
+  font: 700 0.74rem 'Bahnschrift', sans-serif;
+  cursor: pointer;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 10px;
+  min-height: calc(100vh - 124px);
+  position: relative;
+}
+
+.bag {
+  padding: 12px;
+}
+
+.bag h3 {
+  margin: 0 0 9px;
+  color: var(--secondary);
+  letter-spacing: 0.04em;
+}
+
+.bag ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.bag li {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: rgba(16, 44, 72, 0.65);
+}
+
+.bag strong {
+  color: var(--text);
+}
+
+.module-status {
+  margin-top: 10px;
+  font-size: 0.84rem;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.module-status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 7px;
+  background: var(--danger);
+}
+
+.module-status.ok::before {
+  background: var(--ok);
+}
+
+.stage {
+  padding: 10px;
+  overflow: hidden;
+  position: relative;
+  border-image: linear-gradient(120deg, color-mix(in srgb, var(--primary) 58%, transparent), color-mix(in srgb, var(--secondary) 36%, transparent)) 1;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.step {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 9px;
+  font-size: 0.68rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.step.is-active {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #031f33;
+  border-color: transparent;
+  font-weight: 800;
+}
+
+.screen {
+  position: relative;
+  height: 100%;
+  min-height: 500px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 18px 40px rgba(0, 0, 0, 0.38);
+}
+
+.screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(65% 55% at 20% 14%, rgba(255, 255, 255, 0.12), transparent 62%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.22));
+}
+
+.screen-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.1) contrast(1.04);
+  animation: bg-pan 24s ease-in-out infinite alternate;
+}
+
+.bg-distopia {
+  background: linear-gradient(135deg, #071426 0%, #0a2a4a 40%, #153866 70%, #1a4570 100%);
+}
+
+.bg-lab {
+  background: linear-gradient(135deg, #0a1e35 0%, #0d3355 40%, #12527a 70%, #186690 100%);
+}
+
+.bg-reborn {
+  background: linear-gradient(135deg, #0a2e1f 0%, #145738 40%, #1a7d52 70%, #22a368 100%);
+}
+
+@keyframes bg-pan {
+  0% {
+    transform: scale(1.01) translate3d(0, 0, 0);
+    filter: saturate(1.08) contrast(1.03);
+  }
+  100% {
+    transform: scale(1.06) translate3d(-1.2%, -0.8%, 0);
+    filter: saturate(1.15) contrast(1.08);
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  padding: 16px;
+  background:
+    linear-gradient(180deg, rgba(5, 15, 30, 0.14), rgba(5, 15, 30, 0.72)),
+    radial-gradient(80% 50% at 50% -10%, rgba(126, 232, 255, 0.11), transparent 62%);
+  overflow: auto;
+}
+
+.content h2 {
+  margin: 0 0 8px;
+  font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+}
+
+.content p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.pill {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #03243a;
+  font-weight: 800;
+  padding: 7px 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+  font-size: 0.72rem;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn {
+  border: none;
+  border-radius: 11px;
+  padding: 10px 14px;
+  font: 800 0.84rem 'Bahnschrift', sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.btn.primary {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #032136;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--primary) 28%, transparent);
+}
+
+.btn.ghost {
+  border: 1px solid var(--line);
+  background: rgba(14, 43, 70, 0.75);
+  color: var(--text);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn.primary:active,
+.btn.ghost:active {
+  transform: translateY(0);
+}
+
+.avatar-layout {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  gap: 10px;
+}
+
+.avatar-preview {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: rgba(12, 36, 58, 0.72);
+  display: grid;
+  place-items: center;
+  min-height: 260px;
+}
+
+.avatar-svg {
+  width: min(92%, 250px);
+  overflow: visible;
+}
+
+.avatar-svg .avatar-bob {
+  transform-origin: 50% 50%;
+  animation: avatar-bob 2.8s ease-in-out infinite;
+}
+
+@keyframes avatar-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes avatar-blink {
+  0%, 46%, 52%, 100% { transform: scaleY(1); }
+  48%, 50% { transform: scaleY(0.18); }
+}
+
+.avatar-controls {
+  display: grid;
+  gap: 8px;
+}
+
+.group {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(14, 42, 68, 0.78);
+  padding: 8px;
+}
+
+.group small {
+  display: block;
+  margin-bottom: 6px;
+  color: #c5e4f7;
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+}
+
+.swatch.is-selected,
+.pill-option.is-selected,
+.tool-card.is-selected,
+.tool-chip.is-armed,
+.slot.is-done {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--secondary) 40%, transparent);
+}
+
+.pill-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pill-option {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(12, 34, 56, 0.8);
+  color: var(--text);
+  padding: 7px 10px;
+  font: 700 0.73rem 'Bahnschrift', sans-serif;
+  cursor: pointer;
+}
+
+.tool-grid {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.tool-card {
+  border: 1.2px solid var(--line);
+  border-radius: 12px;
+  padding: 9px;
+  text-align: left;
+  cursor: pointer;
+  background: rgba(14, 42, 68, 0.78);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.tool-card .icon {
+  font-size: 1.35rem;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(5, 20, 34, 0.62);
+  margin-bottom: 6px;
+}
+
+.tool-card strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.86rem;
+}
+
+.tool-card p {
+  margin-top: 4px;
+  font-size: 0.76rem;
+}
+
+.hint {
+  margin-top: 8px;
+  color: #b4d1e6;
+  font-size: 0.86rem;
+}
+
+.repair-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.tool-chip {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(13, 40, 66, 0.8);
+  color: var(--text);
+  padding: 7px 11px;
+  font: 700 0.74rem 'Bahnschrift', sans-serif;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.repair-grid {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 8px;
+}
+
+.slot {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(14, 42, 68, 0.8);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.slot strong {
+  display: block;
+}
+
+.slot small {
+  color: #c0ddf0;
+}
+
+.summary-grid {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+.summary-grid article {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(14, 42, 68, 0.8);
+  padding: 8px;
+}
+
+.summary-grid small {
+  color: #b3d0e5;
+  display: block;
+  font-size: 0.7rem;
+}
+
+.summary-grid strong {
+  font-size: 0.88rem;
+}
+
+/* Theme switcher bar */
+.theme-switcher {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.theme-switcher button {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(14, 42, 68, 0.78);
+  color: var(--text);
+  padding: 6px 12px;
+  font: 700 0.72rem 'Bahnschrift', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-switcher button.active {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #031f33;
+  border-color: transparent;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .avatar-layout {
+    grid-template-columns: 1fr;
+  }
+  .screen {
+    min-height: 68vh;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    grid-template-columns: 1fr;
+  }
+  .hud {
+    justify-content: flex-start;
+  }
+  .tool-grid, .repair-grid, .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen-bg, .avatar-svg .avatar-bob, .btn, .timer.danger {
+    animation: none !important;
+    transition: none !important;
+  }
+}
