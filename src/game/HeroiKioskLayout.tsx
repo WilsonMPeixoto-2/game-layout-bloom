@@ -9,8 +9,8 @@ import {
   ACCESSORIES,
   TOOLS,
   DREAM_SLOTS,
-  type ScreenId,
-} from './types';
+  type ScreenId } from
+'./types';
 import '../styles/heroi-kiosk.css';
 
 import bgAttract from '../assets/bg-attract.jpg';
@@ -26,19 +26,19 @@ const SCENE_BG: Record<ScreenId, string> = {
   AVATAR: bgAvatar,
   TOOLKIT: bgToolkit,
   REPAIR: bgRepair,
-  RESULT: bgResult,
+  RESULT: bgResult
 };
 
 const sceneTransition = {
   initial: { opacity: 0, scale: 1.05 },
   animate: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const } },
-  exit: { opacity: 0, scale: 0.95, transition: { duration: 0.4, ease: 'easeIn' as const } },
+  exit: { opacity: 0, scale: 0.95, transition: { duration: 0.4, ease: 'easeIn' as const } }
 };
 
 function stepLabel(s: ScreenId) {
   const labels: Record<ScreenId, string> = {
     ATTRACT: 'Attract', INTRO: 'Contexto', AVATAR: 'Avatar',
-    TOOLKIT: 'Ferramentas', REPAIR: 'Reparo', RESULT: 'Resultado',
+    TOOLKIT: 'Ferramentas', REPAIR: 'Reparo', RESULT: 'Resultado'
   };
   return labels[s];
 }
@@ -49,7 +49,7 @@ export default function HeroiKioskLayout() {
   const [selectedTools, setSelectedTools] = useState<string[]>(['escuta-ativa', 'imaginacao', 'foco']);
   const [armedTool, setArmedTool] = useState<string | null>('escuta-ativa');
   const [slotProgress] = useState<Record<string, number>>({
-    comunicacao: 2, criatividade: 1, coragem: 0, cooperacao: 2,
+    comunicacao: 2, criatividade: 1, coragem: 0, cooperacao: 2
   });
 
   const goNext = () => {
@@ -65,11 +65,11 @@ export default function HeroiKioskLayout() {
     <div className="heroi-root">
       {/* Dev switcher */}
       <div className="theme-switcher">
-        {SCREEN_ORDER.map((s) => (
-          <button key={s} className={screen === s ? 'active' : ''} onClick={() => setScreen(s)}>
+        {SCREEN_ORDER.map((s) =>
+        <button key={s} className={screen === s ? 'active' : ''} onClick={() => setScreen(s)}>
             {stepLabel(s)}
           </button>
-        ))}
+        )}
       </div>
 
       <AnimatePresence mode="wait">
@@ -85,17 +85,17 @@ export default function HeroiKioskLayout() {
 
       {/* Progress dots */}
       <div className="progress-dots">
-        {SCREEN_ORDER.map((s, i) => (
-          <button
-            key={s}
-            className={`progress-dot ${screen === s ? 'active' : SCREEN_ORDER.indexOf(screen) > i ? 'completed' : ''}`}
-            onClick={() => setScreen(s)}
-            aria-label={stepLabel(s)}
-          />
-        ))}
+        {SCREEN_ORDER.map((s, i) =>
+        <button
+          key={s}
+          className={`progress-dot ${screen === s ? 'active' : SCREEN_ORDER.indexOf(screen) > i ? 'completed' : ''}`}
+          onClick={() => setScreen(s)}
+          aria-label={stepLabel(s)} />
+
+        )}
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 /* ===== HUD ===== */
@@ -114,16 +114,16 @@ function Hud() {
           <div className="hud-energy-bar"><div className="hud-energy-fill" style={{ width: '100%' }} /></div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 /* ===== ATTRACT ===== */
-function AttractScene({ onStart }: { onStart: () => void }) {
+function AttractScene({ onStart }: {onStart: () => void;}) {
   return (
     <div className="scene">
       <div className="scene-bg" style={{ backgroundImage: `url(${SCENE_BG.ATTRACT})` }} />
-      <div className="scene-content">
+      <div className="scene-content rounded-sm opacity-80 shadow-sm">
         <div className="narrative-box">
           <motion.span className="narrative-tag" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
             ⚡ Estação Herói — Missão Ativa
@@ -139,12 +139,12 @@ function AttractScene({ onStart }: { onStart: () => void }) {
           </motion.div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 /* ===== INTRO ===== */
-function IntroScene({ onNext }: { onNext: () => void }) {
+function IntroScene({ onNext }: {onNext: () => void;}) {
   return (
     <div className="scene">
       <div className="scene-bg" style={{ backgroundImage: `url(${SCENE_BG.INTRO})` }} />
@@ -162,17 +162,17 @@ function IntroScene({ onNext }: { onNext: () => void }) {
           </motion.div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 /* ===== AVATAR ===== */
-function AvatarScene({ avatar, setAvatar, onNext, onBack }: {
-  avatar: { skin: number; hair: number; eyes: number; outfit: number; accessory: number };
-  setAvatar: React.Dispatch<React.SetStateAction<typeof avatar>>;
-  onNext: () => void;
-  onBack: () => void;
-}) {
+function AvatarScene({ avatar, setAvatar, onNext, onBack
+
+
+
+
+}: {avatar: {skin: number;hair: number;eyes: number;outfit: number;accessory: number;};setAvatar: React.Dispatch<React.SetStateAction<typeof avatar>>;onNext: () => void;onBack: () => void;}) {
   return (
     <div className="scene">
       <div className="scene-bg" style={{ backgroundImage: `url(${SCENE_BG.AVATAR})` }} />
@@ -196,28 +196,28 @@ function AvatarScene({ avatar, setAvatar, onNext, onBack }: {
                   <circle cx="120" cy="100" r="2" fill="white" />
                 </g>
                 <path d="M88 118 Q100 130 112 118" stroke={SKIN_COLORS[avatar.skin]} strokeWidth="2" fill="none" style={{ filter: 'brightness(0.8)' }} />
-                {avatar.accessory > 0 && (
-                  <text x="100" y="52" textAnchor="middle" fontSize="14" fill="var(--hk-accent-warm)">
+                {avatar.accessory > 0 &&
+                <text x="100" y="52" textAnchor="middle" fontSize="14" fill="var(--hk-accent-warm)">
                     {['', '⟐', '◈', '◆', '◉', '☀'][avatar.accessory]}
                   </text>
-                )}
+                }
               </g>
             </svg>
           </div>
           <div className="avatar-options">
-            <ColorGroup label="Tom de pele" colors={SKIN_COLORS} active={avatar.skin} onSelect={(i) => setAvatar(a => ({ ...a, skin: i }))} />
-            <ColorGroup label="Cabelo" colors={HAIR_COLORS} active={avatar.hair} onSelect={(i) => setAvatar(a => ({ ...a, hair: i }))} />
-            <ColorGroup label="Olhos" colors={EYE_COLORS} active={avatar.eyes} onSelect={(i) => setAvatar(a => ({ ...a, eyes: i }))} />
-            <ColorGroup label="Traje" colors={OUTFIT_COLORS} active={avatar.outfit} onSelect={(i) => setAvatar(a => ({ ...a, outfit: i }))} />
+            <ColorGroup label="Tom de pele" colors={SKIN_COLORS} active={avatar.skin} onSelect={(i) => setAvatar((a) => ({ ...a, skin: i }))} />
+            <ColorGroup label="Cabelo" colors={HAIR_COLORS} active={avatar.hair} onSelect={(i) => setAvatar((a) => ({ ...a, hair: i }))} />
+            <ColorGroup label="Olhos" colors={EYE_COLORS} active={avatar.eyes} onSelect={(i) => setAvatar((a) => ({ ...a, eyes: i }))} />
+            <ColorGroup label="Traje" colors={OUTFIT_COLORS} active={avatar.outfit} onSelect={(i) => setAvatar((a) => ({ ...a, outfit: i }))} />
             <div className="option-group">
               <label>Acessório</label>
               <div className="accessory-pills">
-                {ACCESSORIES.map((acc, i) => (
-                  <button key={acc} className={`accessory-pill ${avatar.accessory === i ? 'active' : ''}`}
-                    onClick={() => setAvatar(a => ({ ...a, accessory: i }))}>
+                {ACCESSORIES.map((acc, i) =>
+                <button key={acc} className={`accessory-pill ${avatar.accessory === i ? 'active' : ''}`}
+                onClick={() => setAvatar((a) => ({ ...a, accessory: i }))}>
                     {acc}
                   </button>
-                ))}
+                )}
               </div>
             </div>
           </div>
@@ -227,34 +227,34 @@ function AvatarScene({ avatar, setAvatar, onNext, onBack }: {
           <button className="btn-hero primary" onClick={onNext}>Confirmar Avatar →</button>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
-function ColorGroup({ label, colors, active, onSelect }: { label: string; colors: string[]; active: number; onSelect: (i: number) => void }) {
+function ColorGroup({ label, colors, active, onSelect }: {label: string;colors: string[];active: number;onSelect: (i: number) => void;}) {
   return (
     <div className="option-group">
       <label>{label}</label>
       <div className="color-swatches">
-        {colors.map((c, i) => (
-          <button key={c} className={`color-swatch ${active === i ? 'active' : ''}`}
-            style={{ background: c }} onClick={() => onSelect(i)} aria-label={`${label} ${i + 1}`} />
-        ))}
+        {colors.map((c, i) =>
+        <button key={c} className={`color-swatch ${active === i ? 'active' : ''}`}
+        style={{ background: c }} onClick={() => onSelect(i)} aria-label={`${label} ${i + 1}`} />
+        )}
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 /* ===== TOOLKIT ===== */
-function ToolkitScene({ selected, setSelected, onNext, onBack }: {
-  selected: string[];
-  setSelected: React.Dispatch<React.SetStateAction<string[]>>;
-  onNext: () => void;
-  onBack: () => void;
-}) {
+function ToolkitScene({ selected, setSelected, onNext, onBack
+
+
+
+
+}: {selected: string[];setSelected: React.Dispatch<React.SetStateAction<string[]>>;onNext: () => void;onBack: () => void;}) {
   const toggle = (id: string) => {
-    setSelected(prev => {
-      if (prev.includes(id)) return prev.filter(t => t !== id);
+    setSelected((prev) => {
+      if (prev.includes(id)) return prev.filter((t) => t !== id);
       if (prev.length >= 3) return prev;
       return [...prev, id];
     });
@@ -270,20 +270,20 @@ function ToolkitScene({ selected, setSelected, onNext, onBack }: {
           <p>Selecione 3 ferramentas para sua missão de restauração.</p>
         </div>
         <div className="tool-selection">
-          {TOOLS.map(tool => (
-            <motion.button key={tool.id}
-              className={`tool-card ${selected.includes(tool.id) ? 'selected' : ''}`}
-              onClick={() => toggle(tool.id)}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
+          {TOOLS.map((tool) =>
+          <motion.button key={tool.id}
+          className={`tool-card ${selected.includes(tool.id) ? 'selected' : ''}`}
+          onClick={() => toggle(tool.id)}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}>
+            
               <div className="tool-icon">{tool.icon}</div>
               <div className="tool-info">
                 <h4>{tool.label}</h4>
                 <p>{tool.summary}</p>
               </div>
             </motion.button>
-          ))}
+          )}
         </div>
         <p className="tool-counter">Selecionadas: {selected.length} / 3</p>
         <div className="action-row">
@@ -291,21 +291,21 @@ function ToolkitScene({ selected, setSelected, onNext, onBack }: {
           <button className="btn-hero primary" onClick={onNext} disabled={selected.length !== 3}>Iniciar Reparo →</button>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 /* ===== REPAIR ===== */
-function RepairScene({ tools, armed, setArmed, progress, onNext, onBack }: {
-  tools: string[];
-  armed: string | null;
-  setArmed: (t: string | null) => void;
-  progress: Record<string, number>;
-  onNext: () => void;
-  onBack: () => void;
-}) {
-  const toolItems = tools.map(id => TOOLS.find(t => t.id === id)!).filter(Boolean);
-  const completed = DREAM_SLOTS.filter(s => (progress[s.id] ?? 0) >= 2).length;
+function RepairScene({ tools, armed, setArmed, progress, onNext, onBack
+
+
+
+
+
+
+}: {tools: string[];armed: string | null;setArmed: (t: string | null) => void;progress: Record<string, number>;onNext: () => void;onBack: () => void;}) {
+  const toolItems = tools.map((id) => TOOLS.find((t) => t.id === id)!).filter(Boolean);
+  const completed = DREAM_SLOTS.filter((s) => (progress[s.id] ?? 0) >= 2).length;
 
   return (
     <div className="scene">
@@ -318,29 +318,29 @@ function RepairScene({ tools, armed, setArmed, progress, onNext, onBack }: {
         </div>
         <div className="repair-layout">
           <div className="armed-tools">
-            {toolItems.map(tool => (
-              <button key={tool.id}
-                className={`armed-chip ${armed === tool.id ? 'active' : ''}`}
-                onClick={() => setArmed(armed === tool.id ? null : tool.id)}
-              >
+            {toolItems.map((tool) =>
+            <button key={tool.id}
+            className={`armed-chip ${armed === tool.id ? 'active' : ''}`}
+            onClick={() => setArmed(armed === tool.id ? null : tool.id)}>
+              
                 <span>{tool.icon}</span> {tool.label}
               </button>
-            ))}
+            )}
           </div>
           <div className="dream-cores">
-            {DREAM_SLOTS.map(slot => {
+            {DREAM_SLOTS.map((slot) => {
               const p = progress[slot.id] ?? 0;
               const done = p >= 2;
               return (
                 <motion.button key={slot.id}
-                  className={`dream-core ${done ? 'online' : ''}`}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                >
+                className={`dream-core ${done ? 'online' : ''}`}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}>
+                  
                   <h4>{slot.label}</h4>
                   <span className="core-status">{done ? '● Online' : `${p}/2`}</span>
-                </motion.button>
-              );
+                </motion.button>);
+
             })}
           </div>
           <p className="combo-display">Progresso: {completed}/4 · Combo: x2 · Melhor: x3</p>
@@ -350,18 +350,18 @@ function RepairScene({ tools, armed, setArmed, progress, onNext, onBack }: {
           <button className="btn-hero primary" onClick={onNext} disabled={completed < 3}>Finalizar Missão →</button>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 /* ===== RESULT ===== */
-function ResultScene({ tools, progress, onRestart }: {
-  tools: string[];
-  progress: Record<string, number>;
-  onRestart: () => void;
-}) {
-  const completed = DREAM_SLOTS.filter(s => (progress[s.id] ?? 0) >= 2).length;
-  const toolNames = tools.map(id => TOOLS.find(t => t.id === id)?.label ?? id).join(', ');
+function ResultScene({ tools, progress, onRestart
+
+
+
+}: {tools: string[];progress: Record<string, number>;onRestart: () => void;}) {
+  const completed = DREAM_SLOTS.filter((s) => (progress[s.id] ?? 0) >= 2).length;
+  const toolNames = tools.map((id) => TOOLS.find((t) => t.id === id)?.label ?? id).join(', ');
 
   return (
     <div className="scene">
@@ -389,6 +389,6 @@ function ResultScene({ tools, progress, onRestart }: {
           </motion.div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
