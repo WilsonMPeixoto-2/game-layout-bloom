@@ -123,7 +123,7 @@ function AttractScene({ onStart }: {onStart: () => void;}) {
   return (
     <div className="scene">
       <div className="scene-bg" style={{ backgroundImage: `url(${SCENE_BG.ATTRACT})` }} />
-      <div className="scene-content rounded-sm opacity-80 shadow-sm">
+      <div className="scene-content rounded-sm shadow-sm border-0 opacity-65">
         <div className="narrative-box">
           <motion.span className="narrative-tag" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
             ⚡ Estação Herói — Missão Ativa
