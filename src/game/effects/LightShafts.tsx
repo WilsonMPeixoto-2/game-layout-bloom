@@ -1,12 +1,11 @@
-import { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { useMemo, memo } from 'react';
 
 interface Props {
   variant?: 'title' | 'triumph';
   intensity?: number;
 }
 
-export default function LightShafts({ variant = 'title', intensity = 1 }: Props) {
+function LightShafts({ variant = 'title', intensity = 1 }: Props) {
   const shafts = useMemo(() => {
     const count = variant === 'triumph' ? 7 : 4;
     return Array.from({ length: count }, (_, i) => ({
@@ -22,8 +21,15 @@ export default function LightShafts({ variant = 'title', intensity = 1 }: Props)
 
   return (
     <div className="absolute inset-0 z-[3] pointer-events-none overflow-hidden">
+      <style>{`
+        @keyframes light-shaft {
+          0%, 100% { opacity: 0.35; }
+          50% { opacity: 0.85; }
+        }
+      `}</style>
+
       {shafts.map((s) => (
-        <motion.div
+        <div
           key={s.id}
           className="absolute top-0"
           style={{
@@ -34,19 +40,11 @@ export default function LightShafts({ variant = 'title', intensity = 1 }: Props)
             transformOrigin: 'top center',
             transform: `rotate(${s.rotation}deg)`,
             filter: 'blur(14px)',
-            willChange: 'opacity',
-          }}
-          animate={{ opacity: [0.35, 0.85, 0.35] }}
-          transition={{
-            duration: s.duration,
-            delay: s.delay,
-            repeat: Infinity,
-            ease: 'easeInOut',
+            animation: `light-shaft ${s.duration}s ${s.delay}s ease-in-out infinite`,
           }}
         />
       ))}
 
-      {/* Top glow — cinematic bloom */}
       <div
         className="absolute top-0 left-0 right-0"
         style={{
@@ -57,3 +55,5 @@ export default function LightShafts({ variant = 'title', intensity = 1 }: Props)
     </div>
   );
 }
+
+export default memo(LightShafts);

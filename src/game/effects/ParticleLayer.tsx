@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { ParticlePreset } from '../types';
 import FloatingDust from './FloatingDust';
 import MagicSparks from './MagicSparks';
@@ -9,26 +10,26 @@ interface Props {
   intensity?: number;
 }
 
-export default function ParticleLayer({ preset, intensity = 0.5 }: Props) {
+function ParticleLayer({ preset, intensity = 0.5 }: Props) {
   switch (preset) {
     case 'dust':
-      return <FloatingDust count={150} />;
+      return <FloatingDust count={40} />;
     case 'sparks':
-      return <MagicSparks count={90} />;
+      return <MagicSparks count={30} />;
     case 'energy':
-      return <EnergyFlow count={220} intensity={intensity} />;
+      return <EnergyFlow count={40} intensity={intensity} />;
     case 'bloom':
       return (
         <>
-          <FloatingDust count={90} color="#ea80fc" opacity={0.25} />
-          <MagicSparks count={50} />
+          <FloatingDust count={25} color="#ea80fc" opacity={0.25} />
+          <MagicSparks count={20} />
         </>
       );
     case 'triumph':
       return (
         <>
-          <TriumphBurst count={300} />
-          <FloatingDust count={120} color="#ffcc00" opacity={0.5} />
+          <TriumphBurst count={60} />
+          <FloatingDust count={30} color="#ffcc00" opacity={0.5} />
         </>
       );
     case 'none':
@@ -36,3 +37,5 @@ export default function ParticleLayer({ preset, intensity = 0.5 }: Props) {
       return null;
   }
 }
+
+export default memo(ParticleLayer);

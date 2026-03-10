@@ -1,6 +1,19 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, memo } from 'react';
 import type { NpcConfig, ParticlePreset } from '../types';
 import ParticleLayer from '../effects/ParticleLayer';
+
+// Preload all background images on app start
+const preloadedImages = new Set<string>();
+function preloadImage(src: string) {
+  if (!src || preloadedImages.has(src)) return;
+  preloadedImages.add(src);
+  const img = new Image();
+  img.src = src;
+}
+
+// Eagerly preload all known backgrounds
+const bgModules = import.meta.glob('/src/assets/bg-*.jpg', { eager: true, as: 'url' });
+Object.values(bgModules).forEach((url) => preloadImage(url as string));
 
 interface Props {
   background: string;
@@ -8,18 +21,14 @@ interface Props {
   particles?: ParticlePreset;
 }
 
-/**
- * SceneMedia — two persistent background divs that crossfade.
- * No dynamic keys, no array manipulation, no remounting.
- */
-export default function SceneMedia({ background, npc, particles = 'dust' }: Props) {
-  // Two persistent layers: A and B. We alternate which is "active".
+function SceneMedia({ background, npc, particles = 'dust' }: Props) {
   const [layerA, setLayerA] = useState(background);
   const [layerB, setLayerB] = useState('');
   const [activeLayer, setActiveLayer] = useState<'A' | 'B'>('A');
   const prevBg = useRef(background);
   const isFirstRender = useRef(true);
 
+  // Preload new background before showing
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -28,15 +37,18 @@ export default function SceneMedia({ background, npc, particles = 'dust' }: Prop
     if (background === prevBg.current) return;
     prevBg.current = background;
 
-    // Load new image into inactive layer, then swap
-    if (activeLayer === 'A') {
-      setLayerB(background);
-      // Wait for image to be set, then fade
-      setTimeout(() => setActiveLayer('B'), 50);
-    } else {
-      setLayerA(background);
-      setTimeout(() => setActiveLayer('A'), 50);
-    }
+    // Ensure image is loaded before crossfading
+    const img = new Image();
+    img.onload = () => {
+      if (activeLayer === 'A') {
+        setLayerB(background);
+        requestAnimationFrame(() => setActiveLayer('B'));
+      } else {
+        setLayerA(background);
+        requestAnimationFrame(() => setActiveLayer('A'));
+      }
+    };
+    img.src = background;
   }, [background, activeLayer]);
 
   // NPC fade
@@ -54,7 +66,6 @@ export default function SceneMedia({ background, npc, particles = 'dust' }: Prop
       return;
     }
 
-    // Fade out, swap, fade in
     setNpcVisible(false);
     const timer = setTimeout(() => {
       setCurrentNpc(npc);
@@ -65,7 +76,6 @@ export default function SceneMedia({ background, npc, particles = 'dust' }: Prop
 
   return (
     <>
-      {/* Two persistent background layers — never remounted */}
       <div
         className="vn-background"
         style={{
@@ -85,10 +95,8 @@ export default function SceneMedia({ background, npc, particles = 'dust' }: Prop
         }}
       />
 
-      {/* Particles — stable */}
       <ParticleLayer preset={particles} intensity={0.6} />
 
-      {/* NPC — single persistent element, CSS fade only */}
       {currentNpc && (
         <div
           className={`vn-npc vn-npc-${currentNpc.position || 'right'}`}
@@ -101,10 +109,11 @@ export default function SceneMedia({ background, npc, particles = 'dust' }: Prop
         </div>
       )}
 
-      {/* Cinematic overlays */}
       <div className="vn-vignette" />
       <div className="vn-grain" />
       <div className="vn-bottom-gradient" />
     </>
   );
 }
+
+export default memo(SceneMedia);
