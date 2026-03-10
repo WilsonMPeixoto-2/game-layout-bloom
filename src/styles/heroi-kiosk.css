@@ -265,7 +265,7 @@
 }
 
 .vn-dialogue-box {
-  background: rgba(6, 14, 28, 0.93);
+  background: rgba(4, 10, 22, 0.96);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
   border: 1px solid var(--hk-border);
@@ -274,7 +274,7 @@
   padding: 20px 24px 24px;
   min-height: 100px;
   position: relative;
-  box-shadow: 0 -10px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 213, 79, 0.08);
+  box-shadow: 0 -10px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 213, 79, 0.08);
 }
 
 .vn-dialogue-text {
