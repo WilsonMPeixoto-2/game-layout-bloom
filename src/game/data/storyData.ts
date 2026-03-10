@@ -14,15 +14,15 @@ import npcLyra from '../../assets/npc-lyra.png';
 import npcGuardian from '../../assets/npc-guardian.png';
 
 export const STORY_SCENES: StoryScene[] = [
-  // ============ ACT 0 — PRÓLOGO ============
+  // ============ ATO 0 — PRÓLOGO ============
   {
     id: 'prologue_1',
     act: 0,
     background: bgAttract,
     speaker: 'Sistema',
     dialogue: [
-      'Alerta! O Módulo dos Sonhos está falhando.',
-      'Se ele se apagar, a cidade esquecerá como sonhar.',
+      'Alerta! O Módulo dos Sonhos está falhando!',
+      'Se ele apagar, a cidade vai esquecer como sonhar.',
     ],
     emotion: 'dormant',
     autoNext: 'prologue_2',
@@ -34,23 +34,23 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgDystopia,
     speaker: 'Narrador',
     dialogue: [
-      'As ruas perderam sua luz. As crianças pararam de brincar.',
-      'Mas alguém respondeu ao chamado. Esse alguém é você.',
+      'As ruas perderam a luz. As crianças pararam de brincar.',
+      'Mas alguém ouviu o chamado. Esse alguém é você!',
     ],
     emotion: 'dormant',
     autoNext: 'city_arrival',
     particles: 'dust',
   },
 
-  // ============ ACT 1 — DESCOBERTA ============
+  // ============ ATO 1 — DESCOBERTA ============
   {
     id: 'city_arrival',
     act: 1,
     background: bgDystopia,
     speaker: 'Narrador',
     dialogue: [
-      'A Estação Herói surge entre as nuvens como um farol moribundo.',
-      'Algo se agita no ar — uma presença antiga sente sua chegada.',
+      'A Estação Herói aparece entre as nuvens.',
+      'Algo no ar sente a sua chegada!',
     ],
     emotion: 'wonder',
     autoNext: 'mentor_meet',
@@ -63,9 +63,9 @@ export const STORY_SCENES: StoryScene[] = [
     npc: { name: 'Lyra', image: npcLyra, position: 'right' },
     speaker: 'Lyra',
     dialogue: [
-      'Finalmente! Eu senti sua luz se aproximando.',
+      'Até que enfim! Eu senti sua luz chegando!',
       'Sou Lyra, guardiã desta estação.',
-      'O Módulo dos Sonhos mantinha a cidade viva. Mas os Núcleos se apagaram.',
+      'O Módulo dos Sonhos mantinha a cidade viva, mas os Núcleos se apagaram.',
     ],
     emotion: 'wonder',
     autoNext: 'mentor_lesson',
@@ -79,14 +79,14 @@ export const STORY_SCENES: StoryScene[] = [
     speaker: 'Lyra',
     dialogue: [
       'São quatro Núcleos: Comunicação, Criatividade, Coragem e Cooperação.',
-      'Cada um precisa de uma abordagem diferente. Suas ferramentas farão a diferença.',
+      'Suas ferramentas vão fazer toda a diferença!',
     ],
     emotion: 'preparation',
     autoNext: 'branch_choice',
     particles: 'sparks',
   },
 
-  // ============ ACT 2 — ESCOLHA ============
+  // ============ ATO 2 — ESCOLHA ============
   {
     id: 'branch_choice',
     act: 2,
@@ -94,8 +94,8 @@ export const STORY_SCENES: StoryScene[] = [
     npc: { name: 'Guardião', image: npcGuardian, position: 'center' },
     speaker: 'Guardião',
     dialogue: [
-      'Sou o Guardião dos Sonhos. Diante de você estão os quatro Núcleos.',
-      'Qual você quer restaurar primeiro?',
+      'Sou o Guardião dos Sonhos.',
+      'Qual Núcleo você quer restaurar primeiro?',
     ],
     emotion: 'preparation',
     choices: [
@@ -105,10 +105,9 @@ export const STORY_SCENES: StoryScene[] = [
       { label: '🤝 Cooperação', nextScene: 'coop_1', requiredTool: 'cooperacao', emotion: 'positive' },
     ],
     particles: 'energy',
-    miniGameSlot: 'puzzle_gateway',
   },
 
-  // ============ ACT 3 — COMUNICAÇÃO ============
+  // ============ ATO 3 — COMUNICAÇÃO ============
   {
     id: 'com_1',
     act: 3,
@@ -116,9 +115,9 @@ export const STORY_SCENES: StoryScene[] = [
     npc: { name: 'Lyra', image: npcLyra, position: 'right' },
     speaker: 'Lyra',
     dialogue: [
-      'O Núcleo da Comunicação está em silêncio profundo.',
-      'As pessoas falam, mas as palavras se dissolvem antes de chegar ao outro.',
-      'Precisamos usar a Escuta Ativa para reconectar essas vozes.',
+      'O Núcleo da Comunicação está em silêncio.',
+      'As pessoas falam, mas ninguém se ouve.',
+      'Vamos usar a Escuta Ativa!',
     ],
     emotion: 'restoration',
     autoNext: 'com_2',
@@ -131,16 +130,15 @@ export const STORY_SCENES: StoryScene[] = [
     npc: { name: 'Guardião', image: npcGuardian, position: 'right' },
     speaker: 'Guardião',
     dialogue: [
-      'O Núcleo responde à sua presença.',
+      'O Núcleo sente sua presença!',
       'Como você quer restaurar a comunicação?',
     ],
     emotion: 'restoration',
     choices: [
-      { label: '🤫 Ouvir cada história não contada', nextScene: 'com_3a', emotion: 'positive', gainItem: 'selo-escuta' },
-      { label: '📢 Criar canais para as vozes se encontrarem', nextScene: 'com_3b', emotion: 'positive', gainItem: 'selo-amplificacao' },
+      { label: '🤫 Ouvir cada história', nextScene: 'com_3a', emotion: 'positive', gainItem: 'selo-escuta' },
+      { label: '📢 Criar canais para as vozes', nextScene: 'com_3b', emotion: 'positive', gainItem: 'selo-amplificacao' },
     ],
     particles: 'energy',
-    miniGameSlot: 'challenge_comunicacao',
   },
   {
     id: 'com_3a',
@@ -148,9 +146,9 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgIntro,
     speaker: 'Narrador',
     dialogue: [
-      'Você ouviu em silêncio. As histórias fluíram — dolorosas, belas, verdadeiras.',
-      'Ao serem ouvidas, as pessoas começaram a ouvir umas às outras.',
-      'O Núcleo pulsa com luz dourada renovada!',
+      'Você ouviu em silêncio. As histórias fluíram.',
+      'As pessoas começaram a ouvir umas às outras!',
+      'O Núcleo brilha com luz dourada!',
     ],
     emotion: 'restoration',
     autoNext: 'convergence',
@@ -163,9 +161,9 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgIntro,
     speaker: 'Narrador',
     dialogue: [
-      'Você construiu pontes sonoras entre bairros isolados.',
-      'Vozes que nunca se encontraram começaram a dialogar.',
-      'O Núcleo resplandece com força!',
+      'Você criou pontes entre vozes que nunca se encontraram.',
+      'Agora elas dialogam juntas!',
+      'O Núcleo brilha com força!',
     ],
     emotion: 'restoration',
     autoNext: 'convergence',
@@ -173,7 +171,7 @@ export const STORY_SCENES: StoryScene[] = [
     gainItem: 'nucleo-comunicacao',
   },
 
-  // ============ ACT 3 — CRIATIVIDADE ============
+  // ============ ATO 3 — CRIATIVIDADE ============
   {
     id: 'cria_1',
     act: 3,
@@ -181,9 +179,9 @@ export const STORY_SCENES: StoryScene[] = [
     npc: { name: 'Lyra', image: npcLyra, position: 'right' },
     speaker: 'Lyra',
     dialogue: [
-      'O Núcleo da Criatividade está cinzento e sem vida.',
-      'Artistas e inventores viviam aqui. Agora, ninguém consegue imaginar nada novo.',
-      'Precisamos reacender a Imaginação neste lugar.',
+      'O Núcleo da Criatividade está cinzento.',
+      'Ninguém consegue imaginar nada novo.',
+      'Vamos reacender a imaginação!',
     ],
     emotion: 'restoration',
     autoNext: 'cria_2',
@@ -201,11 +199,10 @@ export const STORY_SCENES: StoryScene[] = [
     ],
     emotion: 'restoration',
     choices: [
-      { label: '🎨 Pintar sonhos nas paredes vazias', nextScene: 'cria_3a', emotion: 'positive', gainItem: 'selo-pintura' },
-      { label: '🔮 Reimaginar o passado para um futuro melhor', nextScene: 'cria_3b', emotion: 'positive', gainItem: 'selo-visao' },
+      { label: '🎨 Pintar sonhos nas paredes', nextScene: 'cria_3a', emotion: 'positive', gainItem: 'selo-pintura' },
+      { label: '🔮 Imaginar um futuro melhor', nextScene: 'cria_3b', emotion: 'positive', gainItem: 'selo-visao' },
     ],
     particles: 'energy',
-    miniGameSlot: 'challenge_criatividade',
   },
   {
     id: 'cria_3a',
@@ -213,9 +210,9 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgRepairFantasy,
     speaker: 'Narrador',
     dialogue: [
-      'Cada pincelada trouxe uma explosão de luz. Flores brotaram dos desenhos.',
-      'As pessoas pararam, fascinadas. E começaram a pintar também.',
-      'O Núcleo explode em um arco-íris de possibilidades!',
+      'Cada pincelada trouxe uma explosão de luz!',
+      'As pessoas começaram a pintar também!',
+      'O Núcleo explode em cores!',
     ],
     emotion: 'restoration',
     autoNext: 'convergence',
@@ -228,9 +225,9 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgRepairFantasy,
     speaker: 'Narrador',
     dialogue: [
-      'Você transformou cada memória em um projeto novo.',
+      'Você transformou memórias em projetos novos!',
       'Jardins onde havia concreto. Música onde havia silêncio.',
-      'O Núcleo irradia uma luz quente e inventiva!',
+      'O Núcleo brilha com luz quente!',
     ],
     emotion: 'restoration',
     autoNext: 'convergence',
@@ -238,7 +235,7 @@ export const STORY_SCENES: StoryScene[] = [
     gainItem: 'nucleo-criatividade',
   },
 
-  // ============ ACT 3 — CORAGEM ============
+  // ============ ATO 3 — CORAGEM ============
   {
     id: 'cor_1',
     act: 3,
@@ -246,8 +243,9 @@ export const STORY_SCENES: StoryScene[] = [
     npc: { name: 'Lyra', image: npcLyra, position: 'right' },
     speaker: 'Lyra',
     dialogue: [
-      'O Núcleo da Coragem está frio. Sem ele, todos vivem paralisados pelo medo.',
-      'Coragem não é ausência de medo — é agir apesar dele.',
+      'O Núcleo da Coragem está frio.',
+      'Todos vivem com medo.',
+      'Coragem não é não ter medo — é agir mesmo com ele!',
     ],
     emotion: 'restoration',
     autoNext: 'cor_2',
@@ -260,16 +258,15 @@ export const STORY_SCENES: StoryScene[] = [
     npc: { name: 'Guardião', image: npcGuardian, position: 'right' },
     speaker: 'Guardião',
     dialogue: [
-      'A verdadeira coragem nasce quando decidimos agir.',
+      'A coragem nasce quando decidimos agir.',
       'Como você escolhe enfrentar este desafio?',
     ],
     emotion: 'restoration',
     choices: [
       { label: '🛡️ Enfrentar o medo de frente', nextScene: 'cor_3a', emotion: 'warning', gainItem: 'selo-determinacao' },
-      { label: '💜 Acolher a dor com empatia', nextScene: 'cor_3b', emotion: 'positive', gainItem: 'selo-empatia' },
+      { label: '💜 Acolher a dor com carinho', nextScene: 'cor_3b', emotion: 'positive', gainItem: 'selo-empatia' },
     ],
     particles: 'energy',
-    miniGameSlot: 'challenge_coragem',
   },
   {
     id: 'cor_3a',
@@ -277,9 +274,9 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgToolkit,
     speaker: 'Narrador',
     dialogue: [
-      'Você se plantou diante do medo com o coração firme.',
-      'Mostrou às pessoas que o medo pode ser enfrentado — juntos.',
-      'O Núcleo da Coragem arde como uma chama dourada!',
+      'Você enfrentou o medo com o coração firme!',
+      'As pessoas viram que juntos, nada é impossível!',
+      'O Núcleo arde como uma chama dourada!',
     ],
     emotion: 'restoration',
     autoNext: 'convergence',
@@ -292,9 +289,9 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgToolkit,
     speaker: 'Narrador',
     dialogue: [
-      'Você abraçou o medo. Sentiu a dor de cada pessoa.',
-      'A dor se transformou em força.',
-      'O Núcleo se aquece com um brilho suave mas inabalável!',
+      'Você abraçou o medo e sentiu a dor.',
+      'A dor se transformou em força!',
+      'O Núcleo brilha suave mas forte!',
     ],
     emotion: 'restoration',
     autoNext: 'convergence',
@@ -302,7 +299,7 @@ export const STORY_SCENES: StoryScene[] = [
     gainItem: 'nucleo-coragem',
   },
 
-  // ============ ACT 3 — COOPERAÇÃO ============
+  // ============ ATO 3 — COOPERAÇÃO ============
   {
     id: 'coop_1',
     act: 3,
@@ -310,8 +307,8 @@ export const STORY_SCENES: StoryScene[] = [
     npc: { name: 'Lyra', image: npcLyra, position: 'right' },
     speaker: 'Lyra',
     dialogue: [
-      'O Núcleo da Cooperação está fragmentado.',
-      'As pessoas vivem isoladas. Muros invisíveis separam vizinho de vizinho.',
+      'O Núcleo da Cooperação está quebrado.',
+      'As pessoas vivem sozinhas, separadas.',
     ],
     emotion: 'restoration',
     autoNext: 'coop_2',
@@ -324,16 +321,15 @@ export const STORY_SCENES: StoryScene[] = [
     npc: { name: 'Guardião', image: npcGuardian, position: 'right' },
     speaker: 'Guardião',
     dialogue: [
-      'A Cooperação é o mais poderoso dos Núcleos — e o mais frágil.',
-      'Como você vai inspirar ação coletiva?',
+      'A Cooperação é o Núcleo mais poderoso — e o mais frágil.',
+      'Como você vai juntar as pessoas?',
     ],
     emotion: 'restoration',
     choices: [
       { label: '🤲 Criar um círculo de confiança', nextScene: 'coop_3a', emotion: 'positive', gainItem: 'selo-confianca' },
-      { label: '🌉 Construir pontes entre os grupos', nextScene: 'coop_3b', emotion: 'positive', gainItem: 'selo-pontes' },
+      { label: '🌉 Construir pontes entre grupos', nextScene: 'coop_3b', emotion: 'positive', gainItem: 'selo-pontes' },
     ],
     particles: 'energy',
-    miniGameSlot: 'challenge_cooperacao',
   },
   {
     id: 'coop_3a',
@@ -341,9 +337,9 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgRepair,
     speaker: 'Narrador',
     dialogue: [
-      'Você estendeu a mão. Uma pessoa aceitou. Depois outra. E outra.',
-      'O círculo cresceu até envolver toda a praça.',
-      'O Núcleo brilha verde-esmeralda! Os laços renascem.',
+      'Você estendeu a mão. Uma pessoa aceitou. Depois outra.',
+      'O círculo cresceu até envolver toda a praça!',
+      'O Núcleo brilha verde-esmeralda!',
     ],
     emotion: 'restoration',
     autoNext: 'convergence',
@@ -356,8 +352,8 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgRepair,
     speaker: 'Narrador',
     dialogue: [
-      'Você criou espaços de encontro entre os grupos isolados.',
-      'As diferenças se tornaram força. Os muros caíram.',
+      'Você criou espaços para os grupos se encontrarem.',
+      'As diferenças viraram força. Os muros caíram!',
       'O Núcleo brilha como um mosaico vivo!',
     ],
     emotion: 'restoration',
@@ -366,7 +362,7 @@ export const STORY_SCENES: StoryScene[] = [
     gainItem: 'nucleo-cooperacao',
   },
 
-  // ============ ACT 4 — RENASCIMENTO ============
+  // ============ ATO 4 — RENASCIMENTO ============
   {
     id: 'convergence',
     act: 4,
@@ -374,8 +370,8 @@ export const STORY_SCENES: StoryScene[] = [
     npc: { name: 'Lyra', image: npcLyra, position: 'left' },
     speaker: 'Lyra',
     dialogue: [
-      'Incrível! O Núcleo restaurado está irradiando energia para os outros!',
-      'O Módulo dos Sonhos está quase completo. Falta um último impulso.',
+      'Incrível! O Núcleo está irradiando energia!',
+      'O Módulo dos Sonhos está quase pronto!',
     ],
     emotion: 'triumph',
     autoNext: 'climax',
@@ -388,16 +384,15 @@ export const STORY_SCENES: StoryScene[] = [
     npc: { name: 'Guardião', image: npcGuardian, position: 'center' },
     speaker: 'Guardião',
     dialogue: [
-      'Este é o momento decisivo, Herói.',
+      'Este é o momento decisivo, Herói!',
       'O futuro da cidade está em suas mãos!',
     ],
     emotion: 'triumph',
     choices: [
-      { label: '⚡ Liberar toda a energia de uma vez!', nextScene: 'climax_a', emotion: 'warning' },
-      { label: '🌊 Distribuir com sabedoria e cuidado', nextScene: 'climax_b', emotion: 'positive' },
+      { label: '⚡ Liberar toda a energia!', nextScene: 'climax_a', emotion: 'warning' },
+      { label: '🌊 Distribuir com sabedoria', nextScene: 'climax_b', emotion: 'positive' },
     ],
     particles: 'energy',
-    miniGameSlot: 'final_activation',
   },
   {
     id: 'climax_a',
@@ -405,8 +400,8 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgReborn,
     speaker: 'Narrador',
     dialogue: [
-      'Você liberou toda a força numa cascata de luz dourada!',
-      'Cada rua se iluminou. A cidade pulsou como um coração que volta a bater!',
+      'Você liberou toda a força numa cascata de luz!',
+      'A cidade pulsou como um coração voltando a bater!',
     ],
     emotion: 'triumph',
     autoNext: 'triumph',
@@ -418,8 +413,8 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgReborn,
     speaker: 'Narrador',
     dialogue: [
-      'A luz se espalhou gentilmente, como o amanhecer depois da noite mais longa.',
-      'Uma transformação profunda — não um relâmpago, mas um sol que nunca se põe.',
+      'A luz se espalhou como o amanhecer.',
+      'Uma mudança profunda — um sol que nunca se põe.',
     ],
     emotion: 'triumph',
     autoNext: 'triumph',
@@ -433,8 +428,8 @@ export const STORY_SCENES: StoryScene[] = [
     speaker: 'Lyra',
     dialogue: [
       'Você conseguiu, Herói!',
-      'A cidade respira novamente. As pessoas sonham, criam, se conectam.',
-      'O verdadeiro heroísmo vem da empatia, da escuta e da ação coletiva.',
+      'A cidade respira de novo!',
+      'O verdadeiro heroísmo vem da empatia e da ação!',
     ],
     emotion: 'triumph',
     autoNext: 'epilogue',
@@ -446,9 +441,8 @@ export const STORY_SCENES: StoryScene[] = [
     background: bgReborn,
     speaker: 'Narrador',
     dialogue: [
-      'A Estação Herói brilha no horizonte da cidade restaurada.',
-      '"Aqui, um herói nos lembrou como sonhar."',
-      'Obrigado, Herói do Futuro. O mundo precisa de você.',
+      'A Estação Herói brilha no horizonte.',
+      'Obrigado, Herói do Futuro!',
     ],
     emotion: 'triumph',
     particles: 'bloom',

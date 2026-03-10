@@ -8,24 +8,17 @@ interface Props {
 
 export default function LightShafts({ variant = 'title', intensity = 1 }: Props) {
   const shafts = useMemo(() => {
-    const count = variant === 'triumph' ? 8 : 5;
-    return Array.from({ length: count }, (_, i) => {
-      const isTriumph = variant === 'triumph';
-      return {
-        id: i,
-        left: 10 + (i / count) * 80 + (Math.random() - 0.5) * 15,
-        width: isTriumph ? 40 + Math.random() * 80 : 30 + Math.random() * 60,
-        rotation: -15 + Math.random() * 30,
-        duration: 6 + Math.random() * 8,
-        delay: i * 0.8 + Math.random() * 2,
-        opacity: isTriumph ? 0.12 + Math.random() * 0.1 : 0.06 + Math.random() * 0.08,
-      };
-    });
+    const count = variant === 'triumph' ? 5 : 3;
+    return Array.from({ length: count }, (_, i) => ({
+      id: i,
+      left: 15 + (i / count) * 70,
+      width: 40 + i * 20,
+      rotation: -10 + i * 8,
+      duration: 8 + i * 3,
+      delay: i * 1.5,
+      opacity: variant === 'triumph' ? 0.06 : 0.04,
+    }));
   }, [variant]);
-
-  const goldColor = variant === 'triumph'
-    ? 'rgba(255, 215, 0, VAR)'
-    : 'rgba(240, 192, 64, VAR)';
 
   return (
     <div className="absolute inset-0 z-[3] pointer-events-none overflow-hidden">
@@ -37,15 +30,12 @@ export default function LightShafts({ variant = 'title', intensity = 1 }: Props)
             left: `${s.left}%`,
             width: s.width,
             height: '120%',
-            background: `linear-gradient(180deg, ${goldColor.replace('VAR', String(s.opacity * intensity))}, ${goldColor.replace('VAR', String(s.opacity * 0.3 * intensity))}, transparent 85%)`,
+            background: `linear-gradient(180deg, rgba(255,215,0,${s.opacity * intensity}), transparent 80%)`,
             transformOrigin: 'top center',
             transform: `rotate(${s.rotation}deg)`,
-            filter: 'blur(8px)',
+            filter: 'blur(12px)',
           }}
-          animate={{
-            opacity: [0.3, 1, 0.5, 1, 0.3],
-            scaleX: [0.8, 1.2, 0.9, 1.1, 0.8],
-          }}
+          animate={{ opacity: [0.4, 0.8, 0.4] }}
           transition={{
             duration: s.duration,
             delay: s.delay,
@@ -55,17 +45,13 @@ export default function LightShafts({ variant = 'title', intensity = 1 }: Props)
         />
       ))}
 
-      {/* Bloom glow at the top */}
-      <motion.div
+      {/* Top glow */}
+      <div
         className="absolute top-0 left-0 right-0"
         style={{
-          height: '30%',
-          background: variant === 'triumph'
-            ? 'radial-gradient(ellipse 120% 60% at 50% 0%, rgba(255,215,0,0.15), rgba(179,136,255,0.05), transparent)'
-            : 'radial-gradient(ellipse 100% 50% at 50% 0%, rgba(240,192,64,0.1), transparent)',
+          height: '25%',
+          background: `radial-gradient(ellipse 100% 50% at 50% 0%, rgba(255,215,0,${0.06 * intensity}), transparent)`,
         }}
-        animate={{ opacity: [0.5, 1, 0.7, 1, 0.5] }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
       />
     </div>
   );
