@@ -1247,16 +1247,3 @@
     padding: 20px 32px;
   }
 }
-  .vn-npc-image {
-    max-height: 700px;
-    height: 60vh;
-  }
-
-  .vn-dialogue-text {
-    font-size: 1.25rem;
-  }
-
-  .vn-hud {
-    padding: 20px 32px;
-  }
-}
