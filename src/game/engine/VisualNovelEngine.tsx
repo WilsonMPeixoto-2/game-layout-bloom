@@ -55,9 +55,8 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
     setMiniGameActive(false);
   }, [currentScene.id]);
 
-  const handleMiniGameComplete = useCallback((score: number) => {
+  const handleMiniGameComplete = useCallback((_score: number) => {
     setMiniGameActive(false);
-    // Continue to next scene
     advanceDialogue();
   }, [advanceDialogue]);
 
@@ -71,7 +70,6 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
     });
   }, [onComplete, avatarImage, selectedTools, chosenPath, impact, scenesVisited]);
 
-  // Calculate restoration progress for reawakening effect
   const restorationProgress = useMemo(() => {
     if (currentScene.act < 3) return 0;
     if (currentScene.act > 3) return 1;
@@ -80,29 +78,21 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
 
   const isTriumph = currentScene.act === 4;
   const isRestoration = currentScene.act === 3;
-
   const currentText = currentScene.dialogue[dialogueIndex] || '';
-
-  // Hide advance/choices when mini-game is active
   const shouldShowAdvance = showAdvance && !currentScene.miniGameSlot;
   const shouldShowChoices = showChoices && !miniGameActive;
 
   return (
     <div className="vn-container">
-      {/* Scene background + NPC + effects */}
       <SceneMedia
         background={currentScene.background}
         npc={currentScene.npc}
         particles={currentScene.particles || 'dust'}
       />
 
-      {/* Reawakening glow during restoration */}
       {isRestoration && <ReawakeningGlow progress={restorationProgress} />}
-
-      {/* Light shafts during triumph */}
       {isTriumph && <LightShafts variant="triumph" intensity={1} />}
 
-      {/* HUD */}
       <GameHud
         act={currentScene.act}
         avatarImage={avatarImage}
@@ -110,7 +100,6 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
         impact={impact}
       />
 
-      {/* Mini-game overlay */}
       <AnimatePresence>
         {miniGameActive && currentScene.miniGameSlot === 'bubble-connect' && (
           <motion.div
@@ -126,7 +115,6 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
         )}
       </AnimatePresence>
 
-      {/* Bottom panel: dialogue + choices */}
       {!miniGameActive && (
         <div className="vn-bottom-panel">
           <DialogueBox
@@ -175,126 +163,6 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
           )}
         </div>
       )}
-    </div>
-  );
-}
-export default function VisualNovelEngine({ selectedTools, avatarImage, onComplete }: Props) {
-  const {
-    currentScene,
-    dialogueIndex,
-    isDialogueComplete,
-    showChoices,
-    showAdvance,
-    isStoryEnd,
-    impact,
-    progress,
-    chosenPath,
-    scenesVisited,
-    advanceDialogue,
-    selectChoice,
-  } = useStoryEngine(selectedTools);
-
-  // Audio state transitions
-  useEffect(() => {
-    try {
-      const engine = getAudioEngine();
-      engine.transitionTo(currentScene.emotion, 0.5);
-    } catch {}
-  }, [currentScene.emotion, currentScene.id]);
-
-  const handleComplete = useCallback(() => {
-    onComplete({
-      avatarImage: avatarImage || '',
-      tools: selectedTools,
-      path: chosenPath || 'desconhecido',
-      impact,
-      scenesVisited,
-    });
-  }, [onComplete, avatarImage, selectedTools, chosenPath, impact, scenesVisited]);
-
-  // Calculate restoration progress for reawakening effect
-  const restorationProgress = useMemo(() => {
-    if (currentScene.act < 3) return 0;
-    if (currentScene.act > 3) return 1;
-    // Within act 3, estimate based on scene progress
-    return Math.min(1, progress / 80);
-  }, [currentScene.act, progress]);
-
-  const isTriumph = currentScene.act === 4;
-  const isRestoration = currentScene.act === 3;
-
-  const currentText = currentScene.dialogue[dialogueIndex] || '';
-
-  return (
-    <div className="vn-container">
-      {/* Scene background + NPC + effects */}
-      <SceneMedia
-        background={currentScene.background}
-        npc={currentScene.npc}
-        particles={currentScene.particles || 'dust'}
-      />
-
-      {/* Reawakening glow during restoration */}
-      {isRestoration && <ReawakeningGlow progress={restorationProgress} />}
-
-      {/* Light shafts during triumph */}
-      {isTriumph && <LightShafts variant="triumph" intensity={1} />}
-
-      {/* HUD */}
-      <GameHud
-        act={currentScene.act}
-        avatarImage={avatarImage}
-        progress={progress}
-        impact={impact}
-      />
-
-      {/* Bottom panel: dialogue + choices */}
-      <div className="vn-bottom-panel">
-        <DialogueBox
-          speaker={currentScene.speaker}
-          text={currentText}
-          onAdvance={advanceDialogue}
-          isComplete={isDialogueComplete}
-        />
-
-        <AnimatePresence>
-          {showChoices && currentScene.choices && (
-            <ChoicePanel
-              choices={currentScene.choices}
-              selectedTools={selectedTools}
-              onSelect={selectChoice}
-            />
-          )}
-        </AnimatePresence>
-
-        {showAdvance && (
-          <div className="vn-continue-area">
-            <motion.button
-              className="vn-continue-btn"
-              onClick={advanceDialogue}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              Continuar →
-            </motion.button>
-          </div>
-        )}
-
-        {isStoryEnd && (
-          <div className="vn-continue-area">
-            <motion.button
-              className="vn-conclude-btn"
-              onClick={handleComplete}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, type: 'spring' }}
-            >
-              ★ Ver Resultado
-            </motion.button>
-          </div>
-        )}
-      </div>
     </div>
   );
 }
