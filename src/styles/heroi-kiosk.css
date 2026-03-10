@@ -278,13 +278,13 @@
 }
 
 .vn-dialogue-text {
-  font-size: clamp(1rem, 2.2vw, 1.15rem);
-  line-height: 1.8;
-  color: var(--hk-text-bright);
+  font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+  line-height: 1.85;
+  color: #ffffff;
   margin: 0;
-  font-weight: 500;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-  letter-spacing: 0.01em;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.02em;
 }
 
 .vn-cursor {
