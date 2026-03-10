@@ -1,5 +1,7 @@
 export type ScreenId = 'ATTRACT' | 'INTRO' | 'AVATAR' | 'TOOLKIT' | 'REPAIR' | 'RESULT';
 
+export type EmotionalState = 'dormant' | 'wonder' | 'preparation' | 'restoration' | 'triumph';
+
 export interface AvatarState {
   skin: number;
   hair: number;
@@ -19,6 +21,38 @@ export interface DreamSlot {
   id: string;
   label: string;
   acceptedTools: string[];
+}
+
+export interface SceneConfig {
+  id: ScreenId;
+  label: string;
+  emotion: EmotionalState;
+  narrative?: {
+    tag?: string;
+    title: string;
+    body: string;
+  };
+  bg: string;
+  particles: ParticlePreset;
+  audio: {
+    drone: EmotionalState;
+    volume: number;
+  };
+}
+
+export type ParticlePreset = 'dust' | 'sparks' | 'energy' | 'bloom' | 'triumph' | 'none';
+
+export interface GameState {
+  screen: ScreenId;
+  avatar: AvatarState;
+  selectedTools: string[];
+  armedTool: string | null;
+  slotProgress: Record<string, number>;
+  energy: number;
+  combo: number;
+  maxCombo: number;
+  timeRemaining: number;
+  isTimerActive: boolean;
 }
 
 export const SKIN_COLORS = ['#f4c7a1', '#c48f68', '#925c3f', '#5e3523'];
@@ -44,3 +78,16 @@ export const DREAM_SLOTS: DreamSlot[] = [
 ];
 
 export const SCREEN_ORDER: ScreenId[] = ['ATTRACT', 'INTRO', 'AVATAR', 'TOOLKIT', 'REPAIR', 'RESULT'];
+
+export const INITIAL_GAME_STATE: GameState = {
+  screen: 'ATTRACT',
+  avatar: { skin: 0, hair: 1, eyes: 0, outfit: 0, accessory: 2 },
+  selectedTools: [],
+  armedTool: null,
+  slotProgress: { comunicacao: 0, criatividade: 0, coragem: 0, cooperacao: 0 },
+  energy: 100,
+  combo: 0,
+  maxCombo: 0,
+  timeRemaining: 150,
+  isTimerActive: false,
+};
