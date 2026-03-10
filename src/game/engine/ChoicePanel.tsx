@@ -30,7 +30,7 @@ export default function ChoicePanel({ choices, selectedTools, onSelect }: Props)
             }}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: idx * 0.12, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: idx * 0.15, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             whileHover={{ scale: 1.02, x: 8 }}
             whileTap={{ scale: 0.97 }}
           >

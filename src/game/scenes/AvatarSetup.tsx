@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AVATAR_MODELS } from '../data/avatarModels';
 import bgAvatar from '../../assets/bg-avatar.jpg';
 import ParticleLayer from '../effects/ParticleLayer';
+import { getAudioEngine } from '../audio/AudioEngine';
 
 interface Props {
   onSelect: (avatarId: string) => void;
@@ -19,6 +20,16 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
 
   const selected = AVATAR_MODELS.find(m => m.id === selectedId);
 
+  const handleCardClick = (id: string) => {
+    setSelectedId(id);
+    try { getAudioEngine().playSfx('select'); } catch {}
+  };
+
+  const handleFilterClick = (f: 'all' | 'masculina' | 'feminina') => {
+    setFilter(f);
+    try { getAudioEngine().playSfx('tick'); } catch {}
+  };
+
   return (
     <div className="vn-container">
       <div className="vn-background vn-bg-static" style={{ backgroundImage: `url(${bgAvatar})`, filter: 'blur(20px) brightness(0.3) saturate(0.5)' }} />
@@ -26,7 +37,6 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
       <div className="vn-vignette" />
 
       <div className="avatar-setup-layout">
-        {/* Preview area */}
         <div className="avatar-preview-area">
           <AnimatePresence mode="wait">
             {selected ? (
@@ -58,7 +68,6 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
           </AnimatePresence>
         </div>
 
-        {/* Selection panel */}
         <div className="avatar-selection-area">
           <div className="avatar-selection-header">
             <h2>Seu Herói</h2>
@@ -70,7 +79,7 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
               <button
                 key={f}
                 className={`avatar-filter-tab ${filter === f ? 'active' : ''}`}
-                onClick={() => setFilter(f)}
+                onClick={() => handleFilterClick(f)}
               >
                 {f === 'all' ? 'Todos' : f === 'masculina' ? 'Masculino' : 'Feminino'}
               </button>
@@ -82,7 +91,7 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
               <motion.button
                 key={model.id}
                 className={`avatar-card ${selectedId === model.id ? 'selected' : ''}`}
-                onClick={() => setSelectedId(model.id)}
+                onClick={() => handleCardClick(model.id)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.08, duration: 0.4 }}
