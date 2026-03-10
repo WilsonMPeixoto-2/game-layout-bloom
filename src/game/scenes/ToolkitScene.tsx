@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { TOOLS } from '../types';
 import bgToolkit from '../../assets/bg-toolkit.jpg';
 import ParticleLayer from '../effects/ParticleLayer';
+import { getAudioEngine } from '../audio/AudioEngine';
 
 interface Props {
   selected: string[];
@@ -11,6 +12,11 @@ interface Props {
 }
 
 export default function ToolkitScene({ selected, toggleTool, onNext, onBack }: Props) {
+  const handleToggle = (id: string) => {
+    toggleTool(id);
+    try { getAudioEngine().playSfx('select'); } catch {}
+  };
+
   return (
     <div className="vn-container">
       <div className="vn-background vn-bg-static" style={{ backgroundImage: `url(${bgToolkit})` }} />
@@ -34,7 +40,7 @@ export default function ToolkitScene({ selected, toggleTool, onNext, onBack }: P
             <motion.button
               key={tool.id}
               className={`tool-card ${selected.includes(tool.id) ? 'selected' : ''}`}
-              onClick={() => toggleTool(tool.id)}
+              onClick={() => handleToggle(tool.id)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.08, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
