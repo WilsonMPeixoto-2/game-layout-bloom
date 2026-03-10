@@ -355,11 +355,11 @@
 }
 
 .vn-choice-text {
-  font-size: clamp(0.88rem, 1.8vw, 1rem);
-  font-weight: 600;
-  color: var(--hk-text-bright);
+  font-size: clamp(0.92rem, 1.8vw, 1.05rem);
+  font-weight: 700;
+  color: #ffffff;
   line-height: 1.4;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
 .vn-choice-badge {
