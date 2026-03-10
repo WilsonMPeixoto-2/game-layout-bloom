@@ -17,7 +17,6 @@ export default function DialogueBox({ speaker, text, onAdvance, isComplete }: Pr
   const prevTextRef = useRef(text);
   const charCountRef = useRef(0);
 
-  // Reset typewriter when text changes
   useEffect(() => {
     if (text !== prevTextRef.current) {
       setDisplayedChars(0);
@@ -27,7 +26,6 @@ export default function DialogueBox({ speaker, text, onAdvance, isComplete }: Pr
     }
   }, [text]);
 
-  // Typewriter timer with subtle sound
   useEffect(() => {
     if (!isTyping || displayedChars >= text.length) {
       if (displayedChars >= text.length && isTyping) {
@@ -38,9 +36,9 @@ export default function DialogueBox({ speaker, text, onAdvance, isComplete }: Pr
     const timer = setTimeout(() => {
       setDisplayedChars(prev => prev + 1);
       charCountRef.current += 1;
-      // Play subtle tick every 4 chars
-      if (charCountRef.current % 4 === 0) {
-        try { getAudioEngine().playSfx('select'); } catch {}
+      // Subtle tick every 3 chars (softer dedicated SFX)
+      if (charCountRef.current % 3 === 0) {
+        try { getAudioEngine().playSfx('tick'); } catch {}
       }
     }, CHAR_DELAY);
     return () => clearTimeout(timer);
@@ -51,6 +49,7 @@ export default function DialogueBox({ speaker, text, onAdvance, isComplete }: Pr
       setDisplayedChars(text.length);
       setIsTyping(false);
     } else if (!isComplete) {
+      try { getAudioEngine().playSfx('sparkle'); } catch {}
       onAdvance();
     }
   }, [isTyping, text.length, isComplete, onAdvance]);
