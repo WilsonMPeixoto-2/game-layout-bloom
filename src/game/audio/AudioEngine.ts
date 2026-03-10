@@ -8,55 +8,56 @@ interface DroneConfig {
   reverbDecay: number;
 }
 
+// Much gentler, ambient pad-like drones — all sine waves, very low gains
 const DRONE_CONFIGS: Record<EmotionalState, DroneConfig> = {
   dormant: {
     frequencies: [55, 82.41, 110],
-    waveforms: ['sine', 'sine', 'triangle'],
-    gainLevels: [0.12, 0.08, 0.04],
-    filterFreq: 400,
-    reverbDecay: 4,
+    waveforms: ['sine', 'sine', 'sine'],
+    gainLevels: [0.04, 0.025, 0.015],
+    filterFreq: 300,
+    reverbDecay: 5,
   },
   wonder: {
     frequencies: [130.81, 196, 261.63, 329.63],
-    waveforms: ['sine', 'triangle', 'sine', 'sine'],
-    gainLevels: [0.1, 0.07, 0.05, 0.03],
-    filterFreq: 1200,
-    reverbDecay: 3,
+    waveforms: ['sine', 'sine', 'sine', 'sine'],
+    gainLevels: [0.035, 0.025, 0.018, 0.01],
+    filterFreq: 800,
+    reverbDecay: 4,
   },
   preparation: {
     frequencies: [110, 164.81, 220, 277.18],
-    waveforms: ['triangle', 'square', 'sine', 'triangle'],
-    gainLevels: [0.09, 0.06, 0.07, 0.04],
-    filterFreq: 1800,
-    reverbDecay: 2,
+    waveforms: ['sine', 'sine', 'sine', 'sine'],
+    gainLevels: [0.03, 0.022, 0.018, 0.012],
+    filterFreq: 1000,
+    reverbDecay: 3,
   },
   restoration: {
-    frequencies: [146.83, 220, 293.66, 369.99, 440],
-    waveforms: ['sine', 'triangle', 'sine', 'triangle', 'sine'],
-    gainLevels: [0.1, 0.08, 0.06, 0.04, 0.03],
-    filterFreq: 2400,
-    reverbDecay: 2.5,
+    frequencies: [146.83, 220, 293.66, 369.99],
+    waveforms: ['sine', 'sine', 'sine', 'sine'],
+    gainLevels: [0.035, 0.025, 0.018, 0.012],
+    filterFreq: 1200,
+    reverbDecay: 3.5,
   },
   triumph: {
-    frequencies: [196, 261.63, 329.63, 392, 523.25],
-    waveforms: ['sine', 'sine', 'triangle', 'sine', 'sine'],
-    gainLevels: [0.1, 0.08, 0.07, 0.05, 0.04],
-    filterFreq: 3000,
-    reverbDecay: 3.5,
+    frequencies: [196, 261.63, 329.63, 392],
+    waveforms: ['sine', 'sine', 'sine', 'sine'],
+    gainLevels: [0.04, 0.03, 0.02, 0.015],
+    filterFreq: 1400,
+    reverbDecay: 4,
   },
 };
 
 const SFX_DEFINITIONS = {
-  tick: { freq: 1800, duration: 0.03, type: 'sine' as OscillatorType, ramp: 1200, gain: 0.06 },
-  select: { freq: 880, duration: 0.08, type: 'sine' as OscillatorType, ramp: 1100, gain: 0.2 },
-  confirm: { freq: 523.25, duration: 0.2, type: 'sine' as OscillatorType, ramp: 783.99, gain: 0.25 },
-  apply: { freq: 440, duration: 0.3, type: 'triangle' as OscillatorType, ramp: 880, gain: 0.2 },
-  success: { freq: 523.25, duration: 0.5, type: 'sine' as OscillatorType, ramp: 1046.5, gain: 0.25 },
-  combo: { freq: 659.25, duration: 0.25, type: 'sine' as OscillatorType, ramp: 1318.5, gain: 0.2 },
-  error: { freq: 220, duration: 0.2, type: 'sawtooth' as OscillatorType, ramp: 110, gain: 0.15 },
-  triumph: { freq: 392, duration: 0.8, type: 'sine' as OscillatorType, ramp: 783.99, gain: 0.3 },
-  whoosh: { freq: 300, duration: 0.35, type: 'sine' as OscillatorType, ramp: 100, gain: 0.12 },
-  sparkle: { freq: 2000, duration: 0.15, type: 'sine' as OscillatorType, ramp: 4000, gain: 0.08 },
+  tick: { freq: 2400, duration: 0.015, type: 'sine' as OscillatorType, ramp: 1800, gain: 0.012 },
+  select: { freq: 660, duration: 0.1, type: 'sine' as OscillatorType, ramp: 880, gain: 0.08 },
+  confirm: { freq: 523.25, duration: 0.18, type: 'sine' as OscillatorType, ramp: 783.99, gain: 0.1 },
+  apply: { freq: 440, duration: 0.25, type: 'sine' as OscillatorType, ramp: 660, gain: 0.08 },
+  success: { freq: 523.25, duration: 0.4, type: 'sine' as OscillatorType, ramp: 1046.5, gain: 0.1 },
+  combo: { freq: 659.25, duration: 0.2, type: 'sine' as OscillatorType, ramp: 987.77, gain: 0.08 },
+  error: { freq: 220, duration: 0.15, type: 'sine' as OscillatorType, ramp: 165, gain: 0.06 },
+  triumph: { freq: 392, duration: 0.6, type: 'sine' as OscillatorType, ramp: 783.99, gain: 0.12 },
+  whoosh: { freq: 400, duration: 0.25, type: 'sine' as OscillatorType, ramp: 80, gain: 0.04 },
+  sparkle: { freq: 1800, duration: 0.12, type: 'sine' as OscillatorType, ramp: 3200, gain: 0.03 },
 };
 
 export type SfxName = keyof typeof SFX_DEFINITIONS;
@@ -70,8 +71,8 @@ export class AudioEngine {
   private activeFilter: BiquadFilterNode | null = null;
   private convolver: ConvolverNode | null = null;
   private currentState: EmotionalState | null = null;
-  private crossfadeDuration = 2.5;
-  private _masterVolume = 0.5;
+  private crossfadeDuration = 3;
+  private _masterVolume = 0.4;
   private unlocked = false;
 
   async unlock(): Promise<void> {
@@ -87,10 +88,10 @@ export class AudioEngine {
       this.droneGain.connect(this.masterGain);
 
       this.sfxGain = this.ctx.createGain();
-      this.sfxGain.gain.value = 0.7;
+      this.sfxGain.gain.value = 0.6;
       this.sfxGain.connect(this.masterGain);
 
-      this.convolver = this.createReverb(3);
+      this.convolver = this.createReverb(4);
       this.convolver.connect(this.masterGain);
 
       if (this.ctx.state === 'suspended') await this.ctx.resume();
@@ -108,7 +109,7 @@ export class AudioEngine {
     for (let ch = 0; ch < 2; ch++) {
       const data = buffer.getChannelData(ch);
       for (let i = 0; i < length; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay * 1.5);
       }
     }
     const conv = ctx.createConvolver();
@@ -116,19 +117,19 @@ export class AudioEngine {
     return conv;
   }
 
-  async transitionTo(state: EmotionalState, volume = 0.5): Promise<void> {
+  async transitionTo(state: EmotionalState, volume = 0.35): Promise<void> {
     if (!this.unlocked || !this.ctx || !this.droneGain) return;
     if (state === this.currentState) return;
 
     const now = this.ctx.currentTime;
 
-    // Play whoosh for scene transitions
+    // Gentle whoosh for transitions
     this.playSfx('whoosh');
 
-    // Fade out current
+    // Slow fade out current
     this.droneGain.gain.cancelScheduledValues(now);
     this.droneGain.gain.setValueAtTime(this.droneGain.gain.value, now);
-    this.droneGain.gain.linearRampToValueAtTime(0, now + this.crossfadeDuration * 0.4);
+    this.droneGain.gain.linearRampToValueAtTime(0, now + this.crossfadeDuration * 0.5);
 
     // Stop old oscillators after fade
     const oldOscs = [...this.activeOscillators];
@@ -136,7 +137,7 @@ export class AudioEngine {
     setTimeout(() => {
       oldOscs.forEach((o) => { try { o.stop(); o.disconnect(); } catch {} });
       if (oldFilter) oldFilter.disconnect();
-    }, this.crossfadeDuration * 400 + 100);
+    }, this.crossfadeDuration * 500 + 200);
 
     this.activeOscillators = [];
     this.currentState = state;
@@ -147,40 +148,41 @@ export class AudioEngine {
     const filter = this.ctx.createBiquadFilter();
     filter.type = 'lowpass';
     filter.frequency.value = config.filterFreq;
-    filter.Q.value = 1.5;
+    filter.Q.value = 0.7; // Gentle, no resonance peak
     filter.connect(this.droneGain);
     this.activeFilter = filter;
 
-    // Reverb send
+    // Heavy reverb send for ambient wash
     const reverbSend = this.ctx.createGain();
-    reverbSend.gain.value = 0.2;
+    reverbSend.gain.value = 0.35;
     reverbSend.connect(this.convolver!);
 
-    // Create oscillators
+    // Create oscillators with slow LFO-like detuning for warmth
     config.frequencies.forEach((freq, i) => {
       const osc = this.ctx!.createOscillator();
       osc.type = config.waveforms[i] || 'sine';
       osc.frequency.value = freq;
-      osc.detune.value = Math.sin(i * 1.7) * 8;
+      // Slow gentle detuning for organic feel
+      osc.detune.value = Math.sin(i * 2.1) * 5;
 
       const oscGain = this.ctx!.createGain();
-      oscGain.gain.value = config.gainLevels[i] || 0.05;
+      oscGain.gain.value = config.gainLevels[i] || 0.02;
 
       osc.connect(oscGain);
       oscGain.connect(filter);
       oscGain.connect(reverbSend);
-      osc.start(now + this.crossfadeDuration * 0.3);
+      osc.start(now + this.crossfadeDuration * 0.4);
       this.activeOscillators.push(osc);
     });
 
-    // Fade in new
+    // Very slow fade in for smooth ambient feel
     setTimeout(() => {
       if (!this.droneGain || !this.ctx) return;
       const t = this.ctx.currentTime;
       this.droneGain.gain.cancelScheduledValues(t);
       this.droneGain.gain.setValueAtTime(0, t);
-      this.droneGain.gain.linearRampToValueAtTime(volume, t + this.crossfadeDuration * 0.6);
-    }, this.crossfadeDuration * 300);
+      this.droneGain.gain.linearRampToValueAtTime(volume, t + this.crossfadeDuration * 0.8);
+    }, this.crossfadeDuration * 400);
   }
 
   playSfx(name: SfxName): void {
@@ -201,10 +203,10 @@ export class AudioEngine {
     osc.connect(env);
     env.connect(this.sfxGain);
 
-    // Also send to reverb for sparkle (except tick which should be dry)
+    // Reverb for ambient SFX (not tick)
     if (this.convolver && name !== 'tick') {
       const reverbSend = this.ctx.createGain();
-      reverbSend.gain.value = 0.12;
+      reverbSend.gain.value = 0.15;
       env.connect(reverbSend);
       reverbSend.connect(this.convolver);
     }

@@ -9,7 +9,7 @@ interface Props {
   isComplete: boolean;
 }
 
-const CHAR_DELAY = 22;
+const CHAR_DELAY = 25;
 
 export default function DialogueBox({ speaker, text, onAdvance, isComplete }: Props) {
   const [displayedChars, setDisplayedChars] = useState(0);
@@ -36,8 +36,8 @@ export default function DialogueBox({ speaker, text, onAdvance, isComplete }: Pr
     const timer = setTimeout(() => {
       setDisplayedChars(prev => prev + 1);
       charCountRef.current += 1;
-      // Subtle tick every 3 chars (softer dedicated SFX)
-      if (charCountRef.current % 3 === 0) {
+      // Very subtle tick every 4 chars
+      if (charCountRef.current % 4 === 0) {
         try { getAudioEngine().playSfx('tick'); } catch {}
       }
     }, CHAR_DELAY);
