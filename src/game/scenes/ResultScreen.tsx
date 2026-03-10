@@ -1,0 +1,120 @@
+import { motion } from 'framer-motion';
+import type { ResultData } from '../types';
+import { TOOLS } from '../types';
+import bgReborn from '../../assets/bg-reborn.jpg';
+import ParticleLayer from '../effects/ParticleLayer';
+
+interface Props {
+  result: ResultData;
+  onRestart: () => void;
+}
+
+const PATH_LABELS: Record<string, string> = {
+  comunicacao: 'Caminho da Comunicação',
+  criatividade: 'Caminho da Criatividade',
+  coragem: 'Caminho da Coragem',
+  cooperacao: 'Caminho da Cooperação',
+  desconhecido: 'Caminho do Herói',
+};
+
+const PATH_SEALS: Record<string, string> = {
+  comunicacao: '🎧',
+  criatividade: '✨',
+  coragem: '💙',
+  cooperacao: '🤝',
+  desconhecido: '⭐',
+};
+
+export default function ResultScreen({ result, onRestart }: Props) {
+  const toolLabels = result.tools.map(id => TOOLS.find(t => t.id === id)?.label || id);
+
+  return (
+    <div className="vn-container">
+      <div className="vn-background vn-bg-static" style={{ backgroundImage: `url(${bgReborn})` }} />
+      <ParticleLayer preset="triumph" />
+      <div className="vn-vignette" />
+
+      <motion.div
+        className="result-layout"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2 }}
+      >
+        {/* Seal */}
+        <motion.div
+          className="result-seal"
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ delay: 0.3, duration: 1, type: 'spring', stiffness: 100 }}
+        >
+          <div className="result-seal-icon">
+            {PATH_SEALS[result.path] || '⭐'}
+          </div>
+        </motion.div>
+
+        <motion.h2
+          className="result-title"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          Missão Completa
+        </motion.h2>
+
+        <motion.p
+          className="result-path-label"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+        >
+          {PATH_LABELS[result.path] || 'Herói do Futuro'}
+        </motion.p>
+
+        {/* Avatar */}
+        {result.avatarImage && (
+          <motion.img
+            src={result.avatarImage}
+            alt="Seu herói"
+            className="result-avatar"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
+          />
+        )}
+
+        {/* Stats */}
+        <motion.div
+          className="result-stats"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.6 }}
+        >
+          <div className="result-stat">
+            <span className="stat-label">Impacto</span>
+            <span className="stat-value">{result.impact}</span>
+          </div>
+          <div className="result-stat">
+            <span className="stat-label">Cenas Visitadas</span>
+            <span className="stat-value">{result.scenesVisited}</span>
+          </div>
+          <div className="result-stat">
+            <span className="stat-label">Ferramentas</span>
+            <span className="stat-value stat-value-small">{toolLabels.join(' • ')}</span>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="action-row"
+          style={{ marginTop: 24 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+        >
+          <button className="btn-hero primary" onClick={onRestart}>
+            Nova Missão ↻
+          </button>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+}

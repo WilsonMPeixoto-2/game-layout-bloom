@@ -1,0 +1,66 @@
+import { motion } from 'framer-motion';
+import bgAttract from '../../assets/bg-attract.jpg';
+import ParticleLayer from '../effects/ParticleLayer';
+
+interface Props {
+  onStart: () => void;
+}
+
+export default function TitleScreen({ onStart }: Props) {
+  return (
+    <div className="vn-container">
+      <div className="vn-background vn-bg-static" style={{ backgroundImage: `url(${bgAttract})` }} />
+      <ParticleLayer preset="bloom" intensity={0.5} />
+      <div className="vn-vignette" />
+      <div className="vn-grain" />
+
+      <motion.div
+        className="vn-title-content"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <motion.span
+          className="vn-title-tag"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          ⚡ Programa SME — Missão Ativa
+        </motion.span>
+
+        <h1 className="vn-title">Herói do Futuro</h1>
+
+        <motion.p
+          className="vn-title-subtitle"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
+        >
+          O Módulo dos Sonhos precisa de você
+        </motion.p>
+
+        <motion.button
+          className="btn-hero primary vn-start-btn"
+          onClick={onStart}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.6 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Iniciar Missão
+        </motion.button>
+
+        <motion.p
+          className="vn-title-hint"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0.6, 0.3, 0.6] }}
+          transition={{ delay: 2, duration: 3, repeat: Infinity }}
+        >
+          Toque para começar
+        </motion.p>
+      </motion.div>
+    </div>
+  );
+}

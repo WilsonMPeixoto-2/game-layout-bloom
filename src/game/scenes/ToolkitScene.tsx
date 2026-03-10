@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { TOOLS } from '../types';
+import bgToolkit from '../../assets/bg-toolkit.jpg';
+import ParticleLayer from '../effects/ParticleLayer';
 
 interface Props {
   selected: string[];
@@ -10,13 +12,23 @@ interface Props {
 
 export default function ToolkitScene({ selected, toggleTool, onNext, onBack }: Props) {
   return (
-    <>
-      <div className="hud-placeholder" />
-      <div className="interaction-panel">
-        <div className="interaction-header">
-          <h2>Escolha suas Ferramentas</h2>
-          <p>Selecione 3 ferramentas para sua missão de restauração.</p>
-        </div>
+    <div className="vn-container">
+      <div className="vn-background vn-bg-static" style={{ backgroundImage: `url(${bgToolkit})` }} />
+      <ParticleLayer preset="sparks" intensity={0.4} />
+      <div className="vn-vignette" />
+      <div className="vn-bottom-gradient" />
+
+      <div className="toolkit-layout">
+        <motion.div
+          className="toolkit-header"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2>Arsenal de Habilidades</h2>
+          <p>Selecione 3 ferramentas para sua missão. Elas influenciarão suas opções durante a jornada narrativa.</p>
+        </motion.div>
+
         <div className="tool-selection">
           {TOOLS.map((tool, idx) => (
             <motion.button
@@ -25,7 +37,7 @@ export default function ToolkitScene({ selected, toggleTool, onNext, onBack }: P
               onClick={() => toggleTool(tool.id)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.08, duration: 0.4 }}
+              transition={{ delay: idx * 0.08, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
             >
@@ -34,15 +46,29 @@ export default function ToolkitScene({ selected, toggleTool, onNext, onBack }: P
                 <h4>{tool.label}</h4>
                 <p>{tool.summary}</p>
               </div>
+              {selected.includes(tool.id) && (
+                <motion.div
+                  className="tool-check"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 400 }}
+                >
+                  ✓
+                </motion.div>
+              )}
             </motion.button>
           ))}
         </div>
+
         <p className="tool-counter">Selecionadas: {selected.length} / 3</p>
+
         <div className="action-row">
           <button className="btn-hero secondary" onClick={onBack}>← Voltar</button>
-          <button className="btn-hero primary" onClick={onNext} disabled={selected.length !== 3}>Iniciar Reparo →</button>
+          <button className="btn-hero primary" onClick={onNext} disabled={selected.length !== 3}>
+            Iniciar Jornada →
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
