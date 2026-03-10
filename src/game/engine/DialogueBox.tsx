@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getAudioEngine } from '../audio/AudioEngine';
 
 interface Props {
   speaker: string;
@@ -8,12 +9,13 @@ interface Props {
   isComplete: boolean;
 }
 
-const CHAR_DELAY = 25;
+const CHAR_DELAY = 22;
 
 export default function DialogueBox({ speaker, text, onAdvance, isComplete }: Props) {
   const [displayedChars, setDisplayedChars] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
   const prevTextRef = useRef(text);
+  const charCountRef = useRef(0);
 
   // Reset typewriter when text changes
   useEffect(() => {
@@ -21,10 +23,11 @@ export default function DialogueBox({ speaker, text, onAdvance, isComplete }: Pr
       setDisplayedChars(0);
       setIsTyping(true);
       prevTextRef.current = text;
+      charCountRef.current = 0;
     }
   }, [text]);
 
-  // Typewriter timer
+  // Typewriter timer with subtle sound
   useEffect(() => {
     if (!isTyping || displayedChars >= text.length) {
       if (displayedChars >= text.length && isTyping) {
@@ -34,17 +37,20 @@ export default function DialogueBox({ speaker, text, onAdvance, isComplete }: Pr
     }
     const timer = setTimeout(() => {
       setDisplayedChars(prev => prev + 1);
+      charCountRef.current += 1;
+      // Play subtle tick every 4 chars
+      if (charCountRef.current % 4 === 0) {
+        try { getAudioEngine().playSfx('select'); } catch {}
+      }
     }, CHAR_DELAY);
     return () => clearTimeout(timer);
   }, [displayedChars, text.length, isTyping]);
 
   const handleClick = useCallback(() => {
     if (isTyping) {
-      // Skip to full text
       setDisplayedChars(text.length);
       setIsTyping(false);
     } else if (!isComplete) {
-      // Advance to next line
       onAdvance();
     }
   }, [isTyping, text.length, isComplete, onAdvance]);

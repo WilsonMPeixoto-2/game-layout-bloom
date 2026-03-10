@@ -40,7 +40,6 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
               >
                 <img src={selected.image} alt={selected.label} className="avatar-preview-image" />
                 <div className="avatar-preview-label">
-                  <span className="avatar-preview-id">HERÓI // ID: {selected.id.toUpperCase()}</span>
                   <h3>{selected.label}</h3>
                   <span className="avatar-preview-repr">{selected.representacao}</span>
                 </div>
@@ -53,7 +52,7 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
                 animate={{ opacity: 1 }}
               >
                 <div className="avatar-placeholder-icon">◆</div>
-                <p>Selecione seu herói ao lado</p>
+                <p>Escolha seu herói</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -62,8 +61,8 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
         {/* Selection panel */}
         <div className="avatar-selection-area">
           <div className="avatar-selection-header">
-            <h2>Forje sua Identidade</h2>
-            <p>Escolha o avatar que representará você nesta missão. A combinação define seu herói 4K.</p>
+            <h2>Seu Herói</h2>
+            <p>Quem vai salvar a cidade?</p>
           </div>
 
           <div className="avatar-filter-tabs">
@@ -73,7 +72,7 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
                 className={`avatar-filter-tab ${filter === f ? 'active' : ''}`}
                 onClick={() => setFilter(f)}
               >
-                {f === 'all' ? '◎ Todos' : f === 'masculina' ? '◇ Masculino' : '◆ Feminino'}
+                {f === 'all' ? 'Todos' : f === 'masculina' ? 'Masculino' : 'Feminino'}
               </button>
             ))}
           </div>
@@ -92,7 +91,6 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
               >
                 <img src={model.image} alt={model.label} />
                 <span className="avatar-card-label">{model.label}</span>
-                <span className="avatar-card-repr">{model.representacao}</span>
               </motion.button>
             ))}
           </div>
@@ -104,7 +102,7 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
               onClick={() => selectedId && onSelect(selectedId)}
               disabled={!selectedId}
             >
-              Confirmar Avatar →
+              Confirmar →
             </button>
           </div>
         </div>
