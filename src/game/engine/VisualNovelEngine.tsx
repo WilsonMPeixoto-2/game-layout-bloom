@@ -8,6 +8,9 @@ import GameHud from './GameHud';
 import ReawakeningGlow from '../effects/ReawakeningGlow';
 import LightShafts from '../effects/LightShafts';
 import BubbleConnectGame from '../minigames/BubbleConnectGame';
+import ColorPuzzleGame from '../minigames/ColorPuzzleGame';
+import CourageChallengeGame from '../minigames/CourageChallengeGame';
+import CoopSequenceGame from '../minigames/CoopSequenceGame';
 import { getAudioEngine } from '../audio/AudioEngine';
 import type { ResultData } from '../types';
 
