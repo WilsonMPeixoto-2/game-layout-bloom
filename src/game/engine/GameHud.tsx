@@ -10,7 +10,7 @@ interface Props {
 const ACT_LABELS: Record<number, string> = {
   0: 'Prólogo',
   1: 'Descoberta',
-  2: 'Preparação',
+  2: 'Escolha',
   3: 'Restauração',
   4: 'Renascimento',
 };
@@ -20,7 +20,7 @@ export default function GameHud({ act, avatarImage, progress, impact }: Props) {
     <div className="vn-hud">
       <div className="vn-hud-left">
         <span className="vn-hud-act">
-          Ato {act} | {ACT_LABELS[act] || 'Jornada'}
+          {ACT_LABELS[act] || 'Jornada'}
         </span>
         <div className="vn-progress-bar">
           <motion.div
@@ -38,7 +38,7 @@ export default function GameHud({ act, avatarImage, progress, impact }: Props) {
         </div>
         {avatarImage && (
           <div className="vn-hud-avatar">
-            <img src={avatarImage} alt="Seu avatar" />
+            <img src={avatarImage} alt="Avatar" />
           </div>
         )}
       </div>

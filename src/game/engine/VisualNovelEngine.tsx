@@ -1,10 +1,12 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useStoryEngine } from './useStoryEngine';
 import SceneMedia from './SceneMedia';
 import DialogueBox from './DialogueBox';
 import ChoicePanel from './ChoicePanel';
 import GameHud from './GameHud';
+import ReawakeningGlow from '../effects/ReawakeningGlow';
+import LightShafts from '../effects/LightShafts';
 import { getAudioEngine } from '../audio/AudioEngine';
 import type { ResultData } from '../types';
 
@@ -48,6 +50,17 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
     });
   }, [onComplete, avatarImage, selectedTools, chosenPath, impact, scenesVisited]);
 
+  // Calculate restoration progress for reawakening effect
+  const restorationProgress = useMemo(() => {
+    if (currentScene.act < 3) return 0;
+    if (currentScene.act > 3) return 1;
+    // Within act 3, estimate based on scene progress
+    return Math.min(1, progress / 80);
+  }, [currentScene.act, progress]);
+
+  const isTriumph = currentScene.act === 4;
+  const isRestoration = currentScene.act === 3;
+
   const currentText = currentScene.dialogue[dialogueIndex] || '';
 
   return (
@@ -58,6 +71,12 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
         npc={currentScene.npc}
         particles={currentScene.particles || 'dust'}
       />
+
+      {/* Reawakening glow during restoration */}
+      {isRestoration && <ReawakeningGlow progress={restorationProgress} />}
+
+      {/* Light shafts during triumph */}
+      {isTriumph && <LightShafts variant="triumph" intensity={1} />}
 
       {/* HUD */}
       <GameHud
@@ -109,7 +128,7 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5, type: 'spring' }}
             >
-              ★ Concluir Missão
+              ★ Ver Resultado
             </motion.button>
           </div>
         )}

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import bgAttract from '../../assets/bg-attract.jpg';
 import ParticleLayer from '../effects/ParticleLayer';
+import LightShafts from '../effects/LightShafts';
 
 interface Props {
   onStart: () => void;
@@ -10,6 +11,7 @@ export default function TitleScreen({ onStart }: Props) {
   return (
     <div className="vn-container">
       <div className="vn-background vn-bg-static" style={{ backgroundImage: `url(${bgAttract})` }} />
+      <LightShafts variant="title" />
       <ParticleLayer preset="bloom" intensity={0.5} />
       <div className="vn-vignette" />
       <div className="vn-grain" />
@@ -26,7 +28,7 @@ export default function TitleScreen({ onStart }: Props) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5, duration: 0.6 }}
         >
-          ⚡ Programa SME — Missão Ativa
+          ⚡ Missão Ativa
         </motion.span>
 
         <h1 className="vn-title">Herói do Futuro</h1>
@@ -37,7 +39,7 @@ export default function TitleScreen({ onStart }: Props) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          O Módulo dos Sonhos precisa de você
+          A cidade precisa de você
         </motion.p>
 
         <motion.button
@@ -49,7 +51,7 @@ export default function TitleScreen({ onStart }: Props) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          Iniciar Missão
+          Começar
         </motion.button>
 
         <motion.p

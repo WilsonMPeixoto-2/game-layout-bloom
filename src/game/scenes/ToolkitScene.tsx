@@ -25,8 +25,8 @@ export default function ToolkitScene({ selected, toggleTool, onNext, onBack }: P
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h2>Arsenal de Habilidades</h2>
-          <p>Selecione 3 ferramentas para sua missão. Elas influenciarão suas opções durante a jornada narrativa.</p>
+          <h2>Suas Habilidades</h2>
+          <p>Escolha 3 poderes para a missão</p>
         </motion.div>
 
         <div className="tool-selection">
@@ -60,12 +60,12 @@ export default function ToolkitScene({ selected, toggleTool, onNext, onBack }: P
           ))}
         </div>
 
-        <p className="tool-counter">Selecionadas: {selected.length} / 3</p>
+        <p className="tool-counter">{selected.length} / 3</p>
 
         <div className="action-row">
           <button className="btn-hero secondary" onClick={onBack}>← Voltar</button>
           <button className="btn-hero primary" onClick={onNext} disabled={selected.length !== 3}>
-            Iniciar Jornada →
+            Começar Jornada →
           </button>
         </div>
       </div>
