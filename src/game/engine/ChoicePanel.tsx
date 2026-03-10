@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import type { StoryChoice } from '../types';
+import { getAudioEngine } from '../audio/AudioEngine';
 
 interface Props {
   choices: StoryChoice[];
@@ -23,7 +24,10 @@ export default function ChoicePanel({ choices, selectedTools, onSelect }: Props)
           <motion.button
             key={idx}
             className={`vn-choice-btn ${choice.emotion || 'neutral'} ${hasRequiredTool ? 'available' : ''}`}
-            onClick={() => onSelect(choice)}
+            onClick={() => {
+              try { getAudioEngine().playSfx('confirm'); } catch {}
+              onSelect(choice);
+            }}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: idx * 0.12, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -32,7 +36,7 @@ export default function ChoicePanel({ choices, selectedTools, onSelect }: Props)
           >
             <span className="vn-choice-text">{choice.label}</span>
             {choice.requiredTool && hasRequiredTool && (
-              <span className="vn-choice-badge">✦ Ferramenta Ativa</span>
+              <span className="vn-choice-badge">✦ Ativo</span>
             )}
           </motion.button>
         );
