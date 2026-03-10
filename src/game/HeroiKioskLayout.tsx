@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import type { GamePhase, ResultData } from './types';
 import { getAudioEngine } from './audio/AudioEngine';
 import { getAvatarById } from './data/avatarModels';
@@ -9,25 +9,26 @@ import VisualNovelEngine from './engine/VisualNovelEngine';
 import ResultScreen from './scenes/ResultScreen';
 import '../styles/heroi-kiosk.css';
 
-/**
- * Main layout — uses CSS opacity transitions instead of AnimatePresence
- * to prevent remounting and image flickering.
- */
 export default function HeroiKioskLayout() {
   const [phase, setPhase] = useState<GamePhase>('title');
   const [avatarId, setAvatarId] = useState<string | null>(null);
   const [selectedTools, setSelectedTools] = useState<string[]>([]);
   const [result, setResult] = useState<ResultData | null>(null);
   const [transitioning, setTransitioning] = useState(false);
+  const transitionRef = useRef<number | null>(null);
 
   const avatarModel = avatarId ? getAvatarById(avatarId) : null;
 
   const changePhase = useCallback((next: GamePhase) => {
+    if (transitionRef.current) clearTimeout(transitionRef.current);
     setTransitioning(true);
-    setTimeout(() => {
+    transitionRef.current = window.setTimeout(() => {
       setPhase(next);
-      requestAnimationFrame(() => setTransitioning(false));
-    }, 500);
+      // Wait for React to render new phase before fading in
+      transitionRef.current = window.setTimeout(() => {
+        setTransitioning(false);
+      }, 100);
+    }, 600);
   }, []);
 
   const handleStart = useCallback(async () => {
@@ -77,7 +78,7 @@ export default function HeroiKioskLayout() {
       setAvatarId(null);
       setSelectedTools([]);
       setResult(null);
-    }, 600);
+    }, 700);
     try { getAudioEngine().transitionTo('wonder', 0.4); } catch {}
   }, [changePhase]);
 
@@ -87,7 +88,7 @@ export default function HeroiKioskLayout() {
         className="phase-container"
         style={{
           opacity: transitioning ? 0 : 1,
-          transition: 'opacity 0.5s ease-in-out',
+          transition: 'opacity 0.6s ease-in-out',
         }}
       >
         {phase === 'title' && <TitleScreen onStart={handleStart} />}

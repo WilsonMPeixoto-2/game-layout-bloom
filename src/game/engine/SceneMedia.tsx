@@ -9,96 +9,95 @@ interface Props {
 }
 
 /**
- * SceneMedia — crossfade backgrounds and NPCs without remounting.
- * Uses dual-layer technique: prev layer fades out while new layer fades in.
- * No AnimatePresence or key-based remounting to prevent flickering.
+ * SceneMedia — two persistent background divs that crossfade.
+ * No dynamic keys, no array manipulation, no remounting.
  */
 export default function SceneMedia({ background, npc, particles = 'dust' }: Props) {
-  const [bgLayers, setBgLayers] = useState<{ src: string; opacity: number }[]>([
-    { src: background, opacity: 1 },
-  ]);
+  // Two persistent layers: A and B. We alternate which is "active".
+  const [layerA, setLayerA] = useState(background);
+  const [layerB, setLayerB] = useState('');
+  const [activeLayer, setActiveLayer] = useState<'A' | 'B'>('A');
   const prevBg = useRef(background);
+  const isFirstRender = useRef(true);
 
-  // Crossfade background on change
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     if (background === prevBg.current) return;
     prevBg.current = background;
 
-    // Add new layer on top
-    setBgLayers(prev => [...prev, { src: background, opacity: 0 }]);
+    // Load new image into inactive layer, then swap
+    if (activeLayer === 'A') {
+      setLayerB(background);
+      // Wait for image to be set, then fade
+      setTimeout(() => setActiveLayer('B'), 50);
+    } else {
+      setLayerA(background);
+      setTimeout(() => setActiveLayer('A'), 50);
+    }
+  }, [background, activeLayer]);
 
-    // Fade in new layer after a frame
-    requestAnimationFrame(() => {
-      setBgLayers(prev =>
-        prev.map((l, i) =>
-          i === prev.length - 1 ? { ...l, opacity: 1 } : { ...l, opacity: 0 }
-        )
-      );
-    });
-
-    // Remove old layers after transition
-    const timer = setTimeout(() => {
-      setBgLayers([{ src: background, opacity: 1 }]);
-    }, 1200);
-
-    return () => clearTimeout(timer);
-  }, [background]);
-
-  // NPC crossfade
-  const [npcState, setNpcState] = useState<{ config: NpcConfig | undefined; opacity: number }>({
-    config: npc,
-    opacity: npc ? 1 : 0,
-  });
-  const prevNpc = useRef(npc?.name);
+  // NPC fade
+  const [currentNpc, setCurrentNpc] = useState(npc);
+  const [npcVisible, setNpcVisible] = useState(!!npc);
+  const prevNpcName = useRef(npc?.name);
 
   useEffect(() => {
     const newName = npc?.name;
-    if (newName === prevNpc.current) return;
-    prevNpc.current = newName;
+    if (newName === prevNpcName.current) return;
+    prevNpcName.current = newName;
 
     if (!npc) {
-      setNpcState(prev => ({ ...prev, opacity: 0 }));
+      setNpcVisible(false);
       return;
     }
 
     // Fade out, swap, fade in
-    setNpcState(prev => ({ ...prev, opacity: 0 }));
+    setNpcVisible(false);
     const timer = setTimeout(() => {
-      setNpcState({ config: npc, opacity: 1 });
-    }, 400);
-
+      setCurrentNpc(npc);
+      setNpcVisible(true);
+    }, 500);
     return () => clearTimeout(timer);
   }, [npc]);
 
   return (
     <>
-      {/* Background layers — pure CSS transitions, no remounting */}
-      {bgLayers.map((layer, i) => (
-        <div
-          key={`bg-${i}-${layer.src}`}
-          className="vn-background"
-          style={{
-            backgroundImage: `url(${layer.src})`,
-            opacity: layer.opacity,
-            transition: 'opacity 1s ease-out',
-            zIndex: i,
-          }}
-        />
-      ))}
+      {/* Two persistent background layers — never remounted */}
+      <div
+        className="vn-background"
+        style={{
+          backgroundImage: layerA ? `url(${layerA})` : 'none',
+          opacity: activeLayer === 'A' ? 1 : 0,
+          transition: 'opacity 1.2s ease-in-out',
+          zIndex: 0,
+        }}
+      />
+      <div
+        className="vn-background"
+        style={{
+          backgroundImage: layerB ? `url(${layerB})` : 'none',
+          opacity: activeLayer === 'B' ? 1 : 0,
+          transition: 'opacity 1.2s ease-in-out',
+          zIndex: 1,
+        }}
+      />
 
-      {/* Particle effects — stable, no key changes */}
+      {/* Particles — stable */}
       <ParticleLayer preset={particles} intensity={0.6} />
 
-      {/* NPC sprite — CSS transition fade, no remounting */}
-      {npcState.config && (
+      {/* NPC — single persistent element, CSS fade only */}
+      {currentNpc && (
         <div
-          className={`vn-npc vn-npc-${npcState.config.position || 'right'}`}
+          className={`vn-npc vn-npc-${currentNpc.position || 'right'}`}
           style={{
-            opacity: npcState.opacity,
-            transition: 'opacity 0.5s ease-out',
+            opacity: npcVisible ? 1 : 0,
+            transition: 'opacity 0.6s ease-out',
           }}
         >
-          <img src={npcState.config.image} alt={npcState.config.name} className="vn-npc-image" />
+          <img src={currentNpc.image} alt={currentNpc.name} className="vn-npc-image" />
         </div>
       )}
 

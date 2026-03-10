@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { AVATAR_MODELS } from '../data/avatarModels';
 import bgAvatar from '../../assets/bg-avatar.jpg';
 import ParticleLayer from '../effects/ParticleLayer';
@@ -38,34 +38,31 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
 
       <div className="avatar-setup-layout">
         <div className="avatar-preview-area">
-          <AnimatePresence mode="wait">
-            {selected ? (
-              <motion.div
-                key={selected.id}
-                className="avatar-preview-frame"
-                initial={{ opacity: 0, scale: 0.88 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.88 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
+          {/* No AnimatePresence — simple CSS fade */}
+          <div
+            className="avatar-preview-frame"
+            style={{
+              opacity: selected ? 1 : 0,
+              transform: selected ? 'scale(1)' : 'scale(0.88)',
+              transition: 'opacity 0.5s ease, transform 0.5s ease',
+            }}
+          >
+            {selected && (
+              <>
                 <img src={selected.image} alt={selected.label} className="avatar-preview-image" />
                 <div className="avatar-preview-label">
                   <h3>{selected.label}</h3>
                   <span className="avatar-preview-repr">{selected.representacao}</span>
                 </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="placeholder"
-                className="avatar-preview-placeholder"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <div className="avatar-placeholder-icon">◆</div>
-                <p>Escolha seu herói</p>
-              </motion.div>
+              </>
             )}
-          </AnimatePresence>
+          </div>
+          {!selected && (
+            <div className="avatar-preview-placeholder">
+              <div className="avatar-placeholder-icon">◆</div>
+              <p>Escolha seu herói</p>
+            </div>
+          )}
         </div>
 
         <div className="avatar-selection-area">
