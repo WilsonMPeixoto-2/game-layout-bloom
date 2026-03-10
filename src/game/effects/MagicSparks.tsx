@@ -7,20 +7,21 @@ interface Props {
 }
 
 export default function MagicSparks({
-  count = 50,
-  colors = ['#f0c040', '#b388ff', '#4dd9e8', '#ffab76'],
+  count = 80,
+  colors = ['#ffcc00', '#ea80fc', '#00e5ff', '#ff9e40', '#00e676'],
 }: Props) {
   const sparks = useMemo(() =>
     Array.from({ length: count }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
-      y: 60 + Math.random() * 40,
-      size: 2 + Math.random() * 4,
-      duration: 3 + Math.random() * 6,
-      delay: Math.random() * 8,
+      y: 55 + Math.random() * 45,
+      size: 2 + Math.random() * 5,
+      duration: 3 + Math.random() * 7,
+      delay: Math.random() * 10,
       color: colors[Math.floor(Math.random() * colors.length)],
-      riseHeight: -(80 + Math.random() * 120),
-      sway: -30 + Math.random() * 60,
+      riseHeight: -(100 + Math.random() * 160),
+      sway: -40 + Math.random() * 80,
+      blur: Math.random() > 0.6 ? 1 : 0,
     })),
   [count, colors]);
 
@@ -37,14 +38,16 @@ export default function MagicSparks({
             height: s.size,
             borderRadius: '50%',
             background: s.color,
-            boxShadow: `0 0 ${s.size * 4}px ${s.color}, 0 0 ${s.size * 8}px ${s.color}40`,
+            boxShadow: `0 0 ${s.size * 5}px ${s.color}, 0 0 ${s.size * 12}px ${s.color}50`,
+            filter: s.blur ? `blur(${s.blur}px)` : undefined,
             opacity: 0,
+            willChange: 'transform, opacity',
           }}
           animate={{
-            opacity: [0, 0.9, 0.7, 0],
+            opacity: [0, 0.95, 0.75, 0],
             y: [0, s.riseHeight * 0.3, s.riseHeight],
             x: [0, s.sway * 0.5, s.sway],
-            scale: [0.5, 1.2, 0.3],
+            scale: [0.4, 1.3, 0.2],
           }}
           transition={{
             duration: s.duration,
