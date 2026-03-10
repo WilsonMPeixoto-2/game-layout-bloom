@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import type { GamePhase, ResultData } from './types';
 import { getAudioEngine } from './audio/AudioEngine';
 import { getAvatarById } from './data/avatarModels';
@@ -10,32 +9,39 @@ import VisualNovelEngine from './engine/VisualNovelEngine';
 import ResultScreen from './scenes/ResultScreen';
 import '../styles/heroi-kiosk.css';
 
-const phaseTransition = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const } },
-  exit: { opacity: 0, transition: { duration: 0.5 } },
-};
-
+/**
+ * Main layout — uses CSS opacity transitions instead of AnimatePresence
+ * to prevent remounting and image flickering.
+ */
 export default function HeroiKioskLayout() {
   const [phase, setPhase] = useState<GamePhase>('title');
   const [avatarId, setAvatarId] = useState<string | null>(null);
   const [selectedTools, setSelectedTools] = useState<string[]>([]);
   const [result, setResult] = useState<ResultData | null>(null);
+  const [transitioning, setTransitioning] = useState(false);
 
   const avatarModel = avatarId ? getAvatarById(avatarId) : null;
+
+  const changePhase = useCallback((next: GamePhase) => {
+    setTransitioning(true);
+    setTimeout(() => {
+      setPhase(next);
+      requestAnimationFrame(() => setTransitioning(false));
+    }, 500);
+  }, []);
 
   const handleStart = useCallback(async () => {
     const engine = getAudioEngine();
     await engine.unlock();
     engine.transitionTo('wonder', 0.4);
-    setPhase('avatar');
-  }, []);
+    changePhase('avatar');
+  }, [changePhase]);
 
   const handleAvatarSelect = useCallback((id: string) => {
     setAvatarId(id);
-    setPhase('toolkit');
+    changePhase('toolkit');
     try { getAudioEngine().playSfx('confirm'); } catch {}
-  }, []);
+  }, [changePhase]);
 
   const toggleTool = useCallback((id: string) => {
     setSelectedTools(prev => {
@@ -47,73 +53,69 @@ export default function HeroiKioskLayout() {
   }, []);
 
   const handleToolkitNext = useCallback(() => {
-    setPhase('story');
+    changePhase('story');
     try {
       const engine = getAudioEngine();
       engine.playSfx('confirm');
       engine.transitionTo('dormant', 0.3);
     } catch {}
-  }, []);
+  }, [changePhase]);
 
   const handleStoryComplete = useCallback((data: ResultData) => {
     setResult(data);
-    setPhase('result');
+    changePhase('result');
     try {
       const engine = getAudioEngine();
       engine.transitionTo('triumph', 0.6);
       engine.playSfx('triumph');
     } catch {}
-  }, []);
+  }, [changePhase]);
 
   const handleRestart = useCallback(() => {
-    setPhase('title');
-    setAvatarId(null);
-    setSelectedTools([]);
-    setResult(null);
+    changePhase('title');
+    setTimeout(() => {
+      setAvatarId(null);
+      setSelectedTools([]);
+      setResult(null);
+    }, 600);
     try { getAudioEngine().transitionTo('wonder', 0.4); } catch {}
-  }, []);
+  }, [changePhase]);
 
   return (
     <div className="heroi-root">
-      <AnimatePresence mode="wait">
-        {phase === 'title' && (
-          <motion.div key="title" {...phaseTransition} className="phase-container">
-            <TitleScreen onStart={handleStart} />
-          </motion.div>
-        )}
+      <div
+        className="phase-container"
+        style={{
+          opacity: transitioning ? 0 : 1,
+          transition: 'opacity 0.5s ease-in-out',
+        }}
+      >
+        {phase === 'title' && <TitleScreen onStart={handleStart} />}
         {phase === 'avatar' && (
-          <motion.div key="avatar" {...phaseTransition} className="phase-container">
-            <AvatarSetup
-              onSelect={handleAvatarSelect}
-              onBack={() => setPhase('title')}
-            />
-          </motion.div>
+          <AvatarSetup
+            onSelect={handleAvatarSelect}
+            onBack={() => changePhase('title')}
+          />
         )}
         {phase === 'toolkit' && (
-          <motion.div key="toolkit" {...phaseTransition} className="phase-container">
-            <ToolkitScene
-              selected={selectedTools}
-              toggleTool={toggleTool}
-              onNext={handleToolkitNext}
-              onBack={() => setPhase('avatar')}
-            />
-          </motion.div>
+          <ToolkitScene
+            selected={selectedTools}
+            toggleTool={toggleTool}
+            onNext={handleToolkitNext}
+            onBack={() => changePhase('avatar')}
+          />
         )}
         {phase === 'story' && (
-          <motion.div key="story" {...phaseTransition} className="phase-container">
-            <VisualNovelEngine
-              selectedTools={selectedTools}
-              avatarImage={avatarModel?.image || null}
-              onComplete={handleStoryComplete}
-            />
-          </motion.div>
+          <VisualNovelEngine
+            selectedTools={selectedTools}
+            avatarImage={avatarModel?.image || null}
+            onComplete={handleStoryComplete}
+          />
         )}
         {phase === 'result' && result && (
-          <motion.div key="result" {...phaseTransition} className="phase-container">
-            <ResultScreen result={result} onRestart={handleRestart} />
-          </motion.div>
+          <ResultScreen result={result} onRestart={handleRestart} />
         )}
-      </AnimatePresence>
+      </div>
     </div>
   );
 }
