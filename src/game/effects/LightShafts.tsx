@@ -8,15 +8,15 @@ interface Props {
 
 export default function LightShafts({ variant = 'title', intensity = 1 }: Props) {
   const shafts = useMemo(() => {
-    const count = variant === 'triumph' ? 5 : 3;
+    const count = variant === 'triumph' ? 7 : 4;
     return Array.from({ length: count }, (_, i) => ({
       id: i,
-      left: 15 + (i / count) * 70,
-      width: 40 + i * 20,
-      rotation: -10 + i * 8,
-      duration: 8 + i * 3,
-      delay: i * 1.5,
-      opacity: variant === 'triumph' ? 0.06 : 0.04,
+      left: 10 + (i / count) * 80,
+      width: 50 + i * 25,
+      rotation: -12 + i * 7,
+      duration: 9 + i * 3,
+      delay: i * 1.2,
+      opacity: variant === 'triumph' ? 0.08 : 0.05,
     }));
   }, [variant]);
 
@@ -29,13 +29,14 @@ export default function LightShafts({ variant = 'title', intensity = 1 }: Props)
           style={{
             left: `${s.left}%`,
             width: s.width,
-            height: '120%',
-            background: `linear-gradient(180deg, rgba(255,215,0,${s.opacity * intensity}), transparent 80%)`,
+            height: '130%',
+            background: `linear-gradient(180deg, rgba(255,204,0,${s.opacity * intensity}), rgba(234,128,252,${s.opacity * intensity * 0.3}) 50%, transparent 85%)`,
             transformOrigin: 'top center',
             transform: `rotate(${s.rotation}deg)`,
-            filter: 'blur(12px)',
+            filter: 'blur(14px)',
+            willChange: 'opacity',
           }}
-          animate={{ opacity: [0.4, 0.8, 0.4] }}
+          animate={{ opacity: [0.35, 0.85, 0.35] }}
           transition={{
             duration: s.duration,
             delay: s.delay,
@@ -45,12 +46,12 @@ export default function LightShafts({ variant = 'title', intensity = 1 }: Props)
         />
       ))}
 
-      {/* Top glow */}
+      {/* Top glow — cinematic bloom */}
       <div
         className="absolute top-0 left-0 right-0"
         style={{
-          height: '25%',
-          background: `radial-gradient(ellipse 100% 50% at 50% 0%, rgba(255,215,0,${0.06 * intensity}), transparent)`,
+          height: '30%',
+          background: `radial-gradient(ellipse 120% 60% at 50% 0%, rgba(255,204,0,${0.08 * intensity}), rgba(234,128,252,${0.03 * intensity}) 50%, transparent)`,
         }}
       />
     </div>
