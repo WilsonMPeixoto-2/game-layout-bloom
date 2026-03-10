@@ -1,12 +1,14 @@
-import { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { useMemo, memo } from 'react';
 
 interface Props {
   count?: number;
   colors?: string[];
 }
 
-export default function MagicSparks({
+/**
+ * MagicSparks — pure CSS animations to prevent flickering.
+ */
+function MagicSparks({
   count = 80,
   colors = ['#ffcc00', '#ea80fc', '#00e5ff', '#ff9e40', '#00e676'],
 }: Props) {
@@ -21,14 +23,21 @@ export default function MagicSparks({
       color: colors[Math.floor(Math.random() * colors.length)],
       riseHeight: -(100 + Math.random() * 160),
       sway: -40 + Math.random() * 80,
-      blur: Math.random() > 0.6 ? 1 : 0,
     })),
   [count, colors]);
 
   return (
     <div className="absolute inset-0 z-[5] pointer-events-none overflow-hidden">
+      <style>{`
+        @keyframes spark-rise {
+          0% { opacity: 0; transform: translate(0, 0) scale(0.4); }
+          20% { opacity: 0.95; transform: translate(calc(var(--spark-sway) * 0.3), calc(var(--spark-rise) * 0.3)) scale(1.3); }
+          80% { opacity: 0.75; }
+          100% { opacity: 0; transform: translate(var(--spark-sway), var(--spark-rise)) scale(0.2); }
+        }
+      `}</style>
       {sparks.map((s) => (
-        <motion.div
+        <div
           key={s.id}
           className="absolute"
           style={{
@@ -39,24 +48,14 @@ export default function MagicSparks({
             borderRadius: '50%',
             background: s.color,
             boxShadow: `0 0 ${s.size * 5}px ${s.color}, 0 0 ${s.size * 12}px ${s.color}50`,
-            filter: s.blur ? `blur(${s.blur}px)` : undefined,
-            opacity: 0,
-            willChange: 'transform, opacity',
-          }}
-          animate={{
-            opacity: [0, 0.95, 0.75, 0],
-            y: [0, s.riseHeight * 0.3, s.riseHeight],
-            x: [0, s.sway * 0.5, s.sway],
-            scale: [0.4, 1.3, 0.2],
-          }}
-          transition={{
-            duration: s.duration,
-            delay: s.delay,
-            repeat: Infinity,
-            ease: 'easeOut',
-          }}
+            ['--spark-rise' as string]: `${s.riseHeight}px`,
+            ['--spark-sway' as string]: `${s.sway}px`,
+            animation: `spark-rise ${s.duration}s ${s.delay}s ease-out infinite`,
+          } as React.CSSProperties}
         />
       ))}
     </div>
   );
 }
+
+export default memo(MagicSparks);
