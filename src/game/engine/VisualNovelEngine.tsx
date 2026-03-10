@@ -104,7 +104,7 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
       />
 
       <AnimatePresence>
-        {miniGameActive && currentScene.miniGameSlot === 'bubble-connect' && (
+        {miniGameActive && (
           <motion.div
             key="minigame"
             initial={{ opacity: 0 }}
@@ -113,7 +113,10 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
             transition={{ duration: 0.4 }}
             style={{ position: 'absolute', inset: 0, zIndex: 40 }}
           >
-            <BubbleConnectGame onComplete={handleMiniGameComplete} />
+            {currentScene.miniGameSlot === 'bubble-connect' && <BubbleConnectGame onComplete={handleMiniGameComplete} />}
+            {currentScene.miniGameSlot === 'color-puzzle' && <ColorPuzzleGame onComplete={handleMiniGameComplete} />}
+            {currentScene.miniGameSlot === 'courage-challenge' && <CourageChallengeGame onComplete={handleMiniGameComplete} />}
+            {currentScene.miniGameSlot === 'coop-sequence' && <CoopSequenceGame onComplete={handleMiniGameComplete} />}
           </motion.div>
         )}
       </AnimatePresence>
