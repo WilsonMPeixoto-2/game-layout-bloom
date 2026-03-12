@@ -179,11 +179,12 @@ export default function VolumetricLight({ variant = 'title', intensity = 1.0 }: 
           fragmentShader={godRayFragment}
           uniforms={{
             uTime: { value: 0 },
-            uIntensity: { value: intensity * 1.2 },
+            uIntensity: { value: intensity * 0.9 },
           }}
           transparent
           depthWrite={false}
           blending={THREE.AdditiveBlending}
+          toneMapped={false}
         />
       </mesh>
 
