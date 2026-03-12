@@ -62,7 +62,7 @@ const glowFragmentShader = `
       float ring = 1.0 - smoothstep(ringRadius - ringWidth, ringRadius, dist);
       ring *= 1.0 - smoothstep(ringRadius, ringRadius + ringWidth, dist);
       float pulse = sin(uTime * 1.2) * 0.1 + 0.9;
-      alpha += ring * p * 0.15 * pulse;
+      alpha += ring * p * 0.1 * pulse;
       color = mix(color, white, ring * 0.3);
     }
     

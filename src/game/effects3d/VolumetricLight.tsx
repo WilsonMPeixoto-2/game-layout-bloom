@@ -55,7 +55,7 @@ const shaftFragmentShader = `
     vec3 color = mix(uColor1, uColor2, vUv.y * 0.5);
     color = mix(color, uColor3, pow(vUv.y, 2.0) * 0.4);
     
-    float alpha = vFade * hFade * pulse * noiseModulation * uIntensity * 0.12;
+    float alpha = vFade * hFade * pulse * noiseModulation * uIntensity * 0.07;
     
     gl_FragColor = vec4(color, alpha);
     
