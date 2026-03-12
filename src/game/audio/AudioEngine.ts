@@ -111,11 +111,11 @@ export class AudioEngine {
       this.ctx = new AudioContext();
 
       this.compressor = this.ctx.createDynamicsCompressor();
-      this.compressor.threshold.value = -10;
-      this.compressor.knee.value = 8;
-      this.compressor.ratio.value = 5;
-      this.compressor.attack.value = 0.003;
-      this.compressor.release.value = 0.2;
+      this.compressor.threshold.value = -6;
+      this.compressor.knee.value = 6;
+      this.compressor.ratio.value = 6;
+      this.compressor.attack.value = 0.002;
+      this.compressor.release.value = 0.15;
       this.compressor.connect(this.ctx.destination);
 
       this.masterGain = this.ctx.createGain();
