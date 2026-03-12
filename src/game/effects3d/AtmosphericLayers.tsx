@@ -73,6 +73,8 @@ const fogFragmentShader = `
     float alpha = fog * radialFade * uOpacity;
     
     gl_FragColor = vec4(uColor, alpha);
+    
+    #include <colorspace_fragment>
   }
 `;
 

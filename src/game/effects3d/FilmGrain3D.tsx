@@ -14,7 +14,6 @@ const grainFragment = `
   uniform float uTime;
   varying vec2 vUv;
   
-  // High quality hash
   float hash(vec2 p) {
     vec3 p3 = fract(vec3(p.xyx) * vec3(443.897, 441.423, 437.195));
     p3 += dot(p3, p3.yzx + 19.19);
@@ -22,20 +21,16 @@ const grainFragment = `
   }
   
   void main() {
-    // Animated film grain at different frequencies
     float grain1 = hash(vUv * 800.0 + uTime * 137.0);
     float grain2 = hash(vUv * 400.0 + uTime * 97.0 + 42.0);
-    
-    // Mix two grain frequencies for organic feel
     float grain = mix(grain1, grain2, 0.4);
+    float intensity = (grain - 0.5) * 0.04;
     
-    // Center around 0.5 and apply subtle intensity
-    float intensity = (grain - 0.5) * 0.06;
+    vec3 grainColor = vec3(0.5 + intensity);
     
-    // Slight warm tint to grain (cinematic)
-    vec3 grainColor = vec3(0.52 + intensity, 0.50 + intensity * 0.95, 0.48 + intensity * 0.9);
+    gl_FragColor = vec4(grainColor, 0.012);
     
-    gl_FragColor = vec4(grainColor, 0.035);
+    #include <colorspace_fragment>
   }
 `;
 

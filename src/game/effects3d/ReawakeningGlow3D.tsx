@@ -20,7 +20,6 @@ const glowFragmentShader = `
   
   varying vec2 vUv;
   
-  // Noise
   float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
   }
@@ -43,24 +42,20 @@ const glowFragmentShader = `
     vec2 center = vec2(0.5, 0.55);
     float dist = length(vUv - center);
     
-    // Dynamic golden warmth
     float warmth = p * 0.2;
     vec3 gold = vec3(1.0, 0.82, 0.24);
     vec3 magic = vec3(0.92, 0.5, 1.0);
     vec3 cyan = vec3(0.0, 0.9, 1.0);
     vec3 white = vec3(1.0, 0.98, 0.92);
     
-    // Organic noise modulation
     float n = noise(vUv * 4.0 + uTime * 0.3);
     
-    // Main radial glow with noise breakup
     float radial = 1.0 - smoothstep(0.0, 0.6 + p * 0.2, dist);
     radial *= 0.8 + n * 0.3;
     
     vec3 color = mix(gold, magic, dist * 0.6 + n * 0.2);
     float alpha = radial * warmth;
     
-    // Expanding golden ring
     if (p > 0.2) {
       float ringRadius = 0.15 + p * 0.3;
       float ringWidth = 0.05 + p * 0.03;
@@ -71,7 +66,6 @@ const glowFragmentShader = `
       color = mix(color, white, ring * 0.3);
     }
     
-    // Outer cyan aura
     if (p > 0.5) {
       float outerGlow = exp(-dist * dist * 2.0);
       float pulse2 = sin(uTime * 0.8 + 1.0) * 0.15 + 0.85;
@@ -80,7 +74,6 @@ const glowFragmentShader = `
       alpha += outerGlow * cyanMix * 0.08 * pulse2;
     }
     
-    // Central white-hot core at high progress
     if (p > 0.8) {
       float core = exp(-dist * dist * 12.0);
       float corePulse = sin(uTime * 2.0) * 0.1 + 0.9;
@@ -89,6 +82,8 @@ const glowFragmentShader = `
     }
     
     gl_FragColor = vec4(color, alpha);
+    
+    #include <colorspace_fragment>
   }
 `;
 

@@ -25,7 +25,6 @@ const shaftFragmentShader = `
   
   varying vec2 vUv;
   
-  // Noise function for organic feel
   float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
   }
@@ -42,36 +41,28 @@ const shaftFragmentShader = `
   }
   
   void main() {
-    // Vertical fade from top - more dramatic
     float vFade = pow(1.0 - smoothstep(0.0, 0.9, vUv.y), 1.5);
-    
-    // Horizontal soft edges with Gaussian-like falloff
     float center = abs(vUv.x - 0.5) * 2.0;
     float hFade = exp(-center * center * 4.0);
     
-    // Organic noise modulation
     float n = noise(vUv * 3.0 + vec2(uTime * 0.1, uTime * 0.05 + uIndex));
     float noiseModulation = 0.7 + n * 0.4;
     
-    // Multi-frequency pulsing
     float pulse1 = sin(uTime * (0.25 + uIndex * 0.08) + uIndex * 1.5) * 0.5 + 0.5;
     float pulse2 = sin(uTime * (0.6 + uIndex * 0.12) + uIndex * 2.7) * 0.3 + 0.7;
     float pulse = pulse1 * pulse2;
     
-    // Three-color gradient blend
     vec3 color = mix(uColor1, uColor2, vUv.y * 0.5);
     color = mix(color, uColor3, pow(vUv.y, 2.0) * 0.4);
-    
-    // Edge color shift (chromatic fringe)
-    color += vec3(0.1, 0.0, 0.15) * (1.0 - hFade) * 0.3;
     
     float alpha = vFade * hFade * pulse * noiseModulation * uIntensity * 0.25;
     
     gl_FragColor = vec4(color, alpha);
+    
+    #include <colorspace_fragment>
   }
 `;
 
-// Central god ray shader
 const godRayFragment = `
   uniform float uTime;
   uniform float uIntensity;
@@ -82,13 +73,9 @@ const godRayFragment = `
     vec2 center = vec2(0.5, 0.0);
     float dist = length(vUv - center);
     
-    // Radial gradient with soft falloff
     float radial = exp(-dist * dist * 3.0);
-    
-    // Pulsing
     float pulse = sin(uTime * 0.3) * 0.15 + 0.85;
     
-    // Warm golden color
     vec3 color = mix(
       vec3(1.0, 0.82, 0.2),
       vec3(1.0, 0.95, 0.7),
@@ -98,6 +85,8 @@ const godRayFragment = `
     float alpha = radial * uIntensity * pulse * 0.12;
     
     gl_FragColor = vec4(color, alpha);
+    
+    #include <colorspace_fragment>
   }
 `;
 
@@ -197,49 +186,13 @@ export default function VolumetricLight({ variant = 'title', intensity = 1.0 }: 
         />
       </mesh>
 
-      {/* Ambient upper glow */}
+      {/* Ambient upper glow — reduced opacity */}
       <mesh position={[0, 1.8, -0.4]}>
         <planeGeometry args={[10, 3]} />
         <meshBasicMaterial
           color={variant === 'triumph' ? '#ffd740' : '#ffcc00'}
           transparent
-          opacity={0.1 * intensity}
-          blending={THREE.AdditiveBlending}
-          depthWrite={false}
-        />
-      </mesh>
-
-      {/* Color accent glow from bottom (triumph + title) */}
-      {(variant === 'triumph' || variant === 'title') && (
-        <mesh position={[0, -1.8, -0.4]}>
-          <planeGeometry args={[8, 2]} />
-          <meshBasicMaterial
-            color={variant === 'triumph' ? '#18ffff' : '#ea80fc'}
-            transparent
-            opacity={0.06 * intensity}
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-          />
-        </mesh>
-      )}
-
-      {/* Side color accent */}
-      <mesh position={[-3.5, 0, -0.5]}>
-        <planeGeometry args={[2, 5]} />
-        <meshBasicMaterial
-          color="#ea80fc"
-          transparent
-          opacity={0.03 * intensity}
-          blending={THREE.AdditiveBlending}
-          depthWrite={false}
-        />
-      </mesh>
-      <mesh position={[3.5, 0, -0.5]}>
-        <planeGeometry args={[2, 5]} />
-        <meshBasicMaterial
-          color="#18ffff"
-          transparent
-          opacity={0.03 * intensity}
+          opacity={0.04 * intensity}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
         />
