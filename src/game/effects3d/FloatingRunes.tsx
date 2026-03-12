@@ -56,6 +56,8 @@ const runeFragment = `
     alpha *= edgeFade;
     
     gl_FragColor = vec4(uColor, alpha);
+    
+    #include <colorspace_fragment>
   }
 `;
 

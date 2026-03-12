@@ -189,6 +189,8 @@ const fragmentShader = `
     float alpha = (outerGlow * 0.6 + innerGlow * 0.3 + hotCore * 0.8) * vOpacity;
     
     gl_FragColor = vec4(finalColor, alpha);
+    
+    #include <colorspace_fragment>
   }
 `;
 

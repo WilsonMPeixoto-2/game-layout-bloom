@@ -6,7 +6,6 @@ interface Props {
   src: string;
 }
 
-// Custom shader for cinematic background with color grading
 const bgVertexShader = `
   varying vec2 vUv;
   void main() {
@@ -22,16 +21,6 @@ const bgFragmentShader = `
   
   varying vec2 vUv;
   
-  // Cinematic color grading
-  vec3 filmicToneMap(vec3 x) {
-    float a = 2.51;
-    float b = 0.03;
-    float c = 2.43;
-    float d = 0.59;
-    float e = 0.14;
-    return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
-  }
-  
   void main() {
     vec2 uv = vUv;
     
@@ -42,20 +31,9 @@ const bgFragmentShader = `
     vec4 tex = texture2D(uTexture, uv);
     vec3 color = tex.rgb;
     
-    // Subtle saturation for OLED vibrancy
-    float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
-    color = mix(vec3(luma), color, 1.1);
-    
-    // Gentle warm lift in shadows
-    color += vec3(0.01, 0.005, 0.0) * (1.0 - luma);
-    
-    // Filmic tone mapping (gentle)
-    color = filmicToneMap(color * 1.05);
-    
-    // Subtle blue shadows for cinema look
-    color.b += (1.0 - luma) * 0.008;
-    
     gl_FragColor = vec4(color, uOpacity);
+    
+    #include <colorspace_fragment>
   }
 `;
 
