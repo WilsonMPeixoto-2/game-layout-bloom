@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import bgAttract from '../../assets/bg-attract.jpg';
-import ParticleLayer from '../effects/ParticleLayer';
-import LightShafts from '../effects/LightShafts';
+import SceneCanvas3D from '../effects3d/SceneCanvas3D';
 
 interface Props {
   onStart: () => void;
@@ -10,11 +9,15 @@ interface Props {
 export default function TitleScreen({ onStart }: Props) {
   return (
     <div className="vn-container">
-      <div className="vn-background vn-bg-static" style={{ backgroundImage: `url(${bgAttract})` }} />
-      <LightShafts variant="title" />
-      <ParticleLayer preset="bloom" intensity={0.5} />
-      <div className="vn-vignette" />
-      <div className="vn-grain" />
+      {/* R3F Canvas with bloom particles, volumetric light, full post-processing */}
+      <SceneCanvas3D
+        background={bgAttract}
+        particles="bloom"
+        emotion="wonder"
+        variant="title"
+        lightVariant="title"
+        lightIntensity={1.2}
+      />
 
       <motion.div
         className="vn-title-content"

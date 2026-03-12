@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AVATAR_MODELS } from '../data/avatarModels';
 import bgAvatar from '../../assets/bg-avatar.jpg';
-import ParticleLayer from '../effects/ParticleLayer';
+import SceneCanvas3D from '../effects3d/SceneCanvas3D';
 import { getAudioEngine } from '../audio/AudioEngine';
 
 interface Props {
@@ -32,13 +32,15 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
 
   return (
     <div className="vn-container">
-      <div className="vn-background vn-bg-static" style={{ backgroundImage: `url(${bgAvatar})`, filter: 'blur(20px) brightness(0.3) saturate(0.5)' }} />
-      <ParticleLayer preset="sparks" intensity={0.3} />
-      <div className="vn-vignette" />
+      <SceneCanvas3D
+        background={bgAvatar}
+        particles="sparks"
+        emotion="preparation"
+        variant="story"
+      />
 
       <div className="avatar-setup-layout">
         <div className="avatar-preview-area">
-          {/* No AnimatePresence — simple CSS fade */}
           <div
             className="avatar-preview-frame"
             style={{

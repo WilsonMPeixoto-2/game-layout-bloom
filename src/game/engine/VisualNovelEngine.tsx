@@ -5,8 +5,6 @@ import SceneMedia from './SceneMedia';
 import DialogueBox from './DialogueBox';
 import ChoicePanel from './ChoicePanel';
 import GameHud from './GameHud';
-import ReawakeningGlow from '../effects/ReawakeningGlow';
-import LightShafts from '../effects/LightShafts';
 import BubbleConnectGame from '../minigames/BubbleConnectGame';
 import ColorPuzzleGame from '../minigames/ColorPuzzleGame';
 import CourageChallengeGame from '../minigames/CourageChallengeGame';
@@ -85,16 +83,20 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
   const shouldShowAdvance = showAdvance && !currentScene.miniGameSlot;
   const shouldShowChoices = showChoices && !miniGameActive;
 
+  // Determine light variant based on scene state
+  const lightVariant = isTriumph ? 'triumph' as const : (currentScene.emotion === 'wonder' || currentScene.emotion === 'restoration') ? 'title' as const : 'subtle' as const;
+
   return (
     <div className="vn-container">
       <SceneMedia
         background={currentScene.background}
         npc={currentScene.npc}
         particles={currentScene.particles || 'dust'}
+        emotion={currentScene.emotion}
+        lightVariant={lightVariant}
+        lightIntensity={isTriumph ? 1.5 : isRestoration ? 0.8 + restorationProgress * 0.7 : 0.6}
+        restorationProgress={isRestoration ? restorationProgress : 0}
       />
-
-      {isRestoration && <ReawakeningGlow progress={restorationProgress} />}
-      {isTriumph && <LightShafts variant="triumph" intensity={1} />}
 
       <GameHud
         act={currentScene.act}

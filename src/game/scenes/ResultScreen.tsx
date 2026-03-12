@@ -2,8 +2,7 @@ import { motion } from 'framer-motion';
 import type { ResultData } from '../types';
 import { TOOLS } from '../types';
 import bgReborn from '../../assets/bg-reborn.jpg';
-import ParticleLayer from '../effects/ParticleLayer';
-import LightShafts from '../effects/LightShafts';
+import SceneCanvas3D from '../effects3d/SceneCanvas3D';
 
 interface Props {
   result: ResultData;
@@ -31,10 +30,14 @@ export default function ResultScreen({ result, onRestart }: Props) {
 
   return (
     <div className="vn-container">
-      <div className="vn-background vn-bg-static" style={{ backgroundImage: `url(${bgReborn})` }} />
-      <LightShafts variant="triumph" intensity={1.2} />
-      <ParticleLayer preset="triumph" />
-      <div className="vn-vignette" />
+      <SceneCanvas3D
+        background={bgReborn}
+        particles="triumph"
+        emotion="triumph"
+        variant="result"
+        lightVariant="triumph"
+        lightIntensity={1.2}
+      />
 
       <motion.div
         className="result-layout"

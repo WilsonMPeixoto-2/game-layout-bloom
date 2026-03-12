@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, memo } from 'react';
-import type { NpcConfig, ParticlePreset } from '../types';
-import ParticleLayer from '../effects/ParticleLayer';
+import type { NpcConfig, ParticlePreset, EmotionalState } from '../types';
+import SceneCanvas3D from '../effects3d/SceneCanvas3D';
 
 // Preload all background images on app start
 const preloadedImages = new Set<string>();
@@ -19,39 +19,22 @@ interface Props {
   background: string;
   npc?: NpcConfig;
   particles?: ParticlePreset;
+  emotion?: EmotionalState;
+  lightVariant?: 'title' | 'triumph' | 'subtle';
+  lightIntensity?: number;
+  restorationProgress?: number;
 }
 
-function SceneMedia({ background, npc, particles = 'dust' }: Props) {
-  const [layerA, setLayerA] = useState(background);
-  const [layerB, setLayerB] = useState('');
-  const [activeLayer, setActiveLayer] = useState<'A' | 'B'>('A');
-  const prevBg = useRef(background);
-  const isFirstRender = useRef(true);
-
-  // Preload new background before showing
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    if (background === prevBg.current) return;
-    prevBg.current = background;
-
-    // Ensure image is loaded before crossfading
-    const img = new Image();
-    img.onload = () => {
-      if (activeLayer === 'A') {
-        setLayerB(background);
-        requestAnimationFrame(() => setActiveLayer('B'));
-      } else {
-        setLayerA(background);
-        requestAnimationFrame(() => setActiveLayer('A'));
-      }
-    };
-    img.src = background;
-  }, [background, activeLayer]);
-
-  // NPC fade
+function SceneMedia({
+  background,
+  npc,
+  particles = 'dust',
+  emotion = 'dormant',
+  lightVariant,
+  lightIntensity = 1.0,
+  restorationProgress = 0,
+}: Props) {
+  // NPC fade logic
   const [currentNpc, setCurrentNpc] = useState(npc);
   const [npcVisible, setNpcVisible] = useState(!!npc);
   const prevNpcName = useRef(npc?.name);
@@ -76,27 +59,18 @@ function SceneMedia({ background, npc, particles = 'dust' }: Props) {
 
   return (
     <>
-      <div
-        className="vn-background"
-        style={{
-          backgroundImage: layerA ? `url(${layerA})` : 'none',
-          opacity: activeLayer === 'A' ? 1 : 0,
-          transition: 'opacity 1.2s ease-in-out',
-          zIndex: 0,
-        }}
-      />
-      <div
-        className="vn-background"
-        style={{
-          backgroundImage: layerB ? `url(${layerB})` : 'none',
-          opacity: activeLayer === 'B' ? 1 : 0,
-          transition: 'opacity 1.2s ease-in-out',
-          zIndex: 1,
-        }}
+      {/* R3F Canvas: background, particles, volumetric light, post-processing */}
+      <SceneCanvas3D
+        background={background}
+        particles={particles}
+        emotion={emotion}
+        variant="story"
+        lightVariant={lightVariant}
+        lightIntensity={lightIntensity}
+        restorationProgress={restorationProgress}
       />
 
-      <ParticleLayer preset={particles} intensity={0.6} />
-
+      {/* NPC sprites remain as HTML overlay */}
       {currentNpc && (
         <div
           className={`vn-npc vn-npc-${currentNpc.position || 'right'}`}
@@ -109,8 +83,7 @@ function SceneMedia({ background, npc, particles = 'dust' }: Props) {
         </div>
       )}
 
-      <div className="vn-vignette" />
-      <div className="vn-grain" />
+      {/* Bottom gradient for dialogue readability */}
       <div className="vn-bottom-gradient" />
     </>
   );

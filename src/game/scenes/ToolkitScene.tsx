@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { TOOLS } from '../types';
 import bgToolkit from '../../assets/bg-toolkit.jpg';
-import ParticleLayer from '../effects/ParticleLayer';
+import SceneCanvas3D from '../effects3d/SceneCanvas3D';
 import { getAudioEngine } from '../audio/AudioEngine';
 
 interface Props {
@@ -19,9 +19,14 @@ export default function ToolkitScene({ selected, toggleTool, onNext, onBack }: P
 
   return (
     <div className="vn-container">
-      <div className="vn-background vn-bg-static" style={{ backgroundImage: `url(${bgToolkit})` }} />
-      <ParticleLayer preset="sparks" intensity={0.4} />
-      <div className="vn-vignette" />
+      <SceneCanvas3D
+        background={bgToolkit}
+        particles="sparks"
+        emotion="preparation"
+        variant="story"
+        lightVariant="subtle"
+        lightIntensity={0.5}
+      />
       <div className="vn-bottom-gradient" />
 
       <div className="toolkit-layout">
