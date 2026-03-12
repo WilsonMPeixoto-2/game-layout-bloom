@@ -85,6 +85,9 @@ function SceneCanvas3D({
 
       <GPUParticles preset={particles} intensity={1.0} />
 
+      {/* NPC sprite as textured 3D plane — participates in bloom & depth */}
+      <NpcPlane3D npc={npc} />
+
       {/* Volumetric light shafts */}
       <VolumetricLight
         variant={lightVariant || 'subtle'}
