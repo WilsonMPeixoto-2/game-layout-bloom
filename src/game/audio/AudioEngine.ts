@@ -258,7 +258,7 @@ export class AudioEngine {
     }, speed * 500);
   }
 
-  async transitionTo(state: EmotionalState, volume = 0.8): Promise<void> {
+  async transitionTo(state: EmotionalState, volume = 1.0): Promise<void> {
     if (!this.unlocked || !this.ctx || !this.droneGain) return;
     if (state === this.currentState) return;
 
