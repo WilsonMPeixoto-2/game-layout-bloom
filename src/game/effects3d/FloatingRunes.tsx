@@ -5,7 +5,7 @@ import type { EmotionalState } from '../types';
 
 /**
  * Floating mystical rune/symbol planes rotating slowly in 3D space.
- * Creates the "magic in constant motion" feel of a living diorama.
+ * Very subtle — felt more than seen.
  */
 
 interface Props {
@@ -13,7 +13,6 @@ interface Props {
   count?: number;
 }
 
-// Rune glyph vertex shader
 const runeVertex = `
   varying vec2 vUv;
   void main() {
@@ -22,7 +21,7 @@ const runeVertex = `
   }
 `;
 
-// Procedural rune shader - draws geometric magical symbols
+// Simplified, softer rune shader — more glow, less geometry
 const runeFragment = `
   uniform float uTime;
   uniform float uSeed;
@@ -31,66 +30,32 @@ const runeFragment = `
   
   varying vec2 vUv;
   
-  float circle(vec2 uv, vec2 center, float radius, float thickness) {
-    float d = length(uv - center);
-    return smoothstep(radius + thickness, radius, d) * smoothstep(radius - thickness, radius, d);
-  }
-  
-  float line(vec2 uv, vec2 a, vec2 b, float thickness) {
-    vec2 pa = uv - a;
-    vec2 ba = b - a;
-    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
-    float d = length(pa - ba * h);
-    return smoothstep(thickness, thickness * 0.3, d);
-  }
-  
   void main() {
-    vec2 uv = vUv * 2.0 - 1.0; // Center UV
+    vec2 uv = vUv * 2.0 - 1.0;
     float d = length(uv);
     
-    // Base circle
-    float pattern = circle(uv, vec2(0.0), 0.8, 0.04);
+    // Simple soft ring
+    float ring = exp(-pow(d - 0.6, 2.0) * 30.0);
     
-    // Inner circle
-    pattern += circle(uv, vec2(0.0), 0.5, 0.03);
+    // Inner dot
+    float core = exp(-d * d * 8.0);
     
-    // Cross lines based on seed
-    float angle = uSeed * 6.28;
-    for (float i = 0.0; i < 3.0; i++) {
-      float a = angle + i * 2.094; // 120 degrees
-      vec2 dir = vec2(cos(a), sin(a));
-      pattern += line(uv, dir * 0.2, dir * 0.75, 0.025);
-    }
-    
-    // Center dot
-    pattern += smoothstep(0.12, 0.0, d);
-    
-    // Rotating inner detail
-    float rotAngle = uTime * 0.3 + uSeed * 3.14;
-    vec2 ruv = vec2(
-      uv.x * cos(rotAngle) - uv.y * sin(rotAngle),
-      uv.x * sin(rotAngle) + uv.y * cos(rotAngle)
-    );
-    pattern += circle(ruv, vec2(0.35, 0.0), 0.08, 0.02);
-    pattern += circle(ruv, vec2(-0.35, 0.0), 0.08, 0.02);
-    
-    pattern = clamp(pattern, 0.0, 1.0);
+    // Combine
+    float pattern = ring * 0.4 + core * 0.6;
     
     // Soft outer glow
-    float glow = exp(-d * d * 2.5) * 0.3;
+    float glow = exp(-d * d * 1.5) * 0.2;
     
-    // Pulsing
-    float pulse = sin(uTime * 0.5 + uSeed * 5.0) * 0.15 + 0.85;
+    // Gentle pulse
+    float pulse = sin(uTime * 0.4 + uSeed * 5.0) * 0.2 + 0.8;
     
-    float alpha = (pattern * 0.6 + glow) * pulse * uBrightness;
+    float alpha = (pattern + glow) * pulse * uBrightness;
     
-    // Fade edges of quad
-    float edgeFade = smoothstep(1.0, 0.7, d);
+    // Fade edges
+    float edgeFade = smoothstep(1.0, 0.6, d);
     alpha *= edgeFade;
     
-    vec3 color = uColor * (1.0 + glow * 2.0);
-    
-    gl_FragColor = vec4(color, alpha);
+    gl_FragColor = vec4(uColor, alpha);
   }
 `;
 
@@ -111,7 +76,7 @@ interface RuneData {
   brightness: number;
 }
 
-export default function FloatingRunes({ emotion = 'dormant', count = 6 }: Props) {
+export default function FloatingRunes({ emotion = 'dormant', count = 5 }: Props) {
   const groupRef = useRef<THREE.Group>(null);
   const matsRef = useRef<THREE.ShaderMaterial[]>([]);
 
@@ -119,31 +84,27 @@ export default function FloatingRunes({ emotion = 'dormant', count = 6 }: Props)
     const colors = EMOTION_RUNE_COLORS[emotion] || EMOTION_RUNE_COLORS.dormant;
     return Array.from({ length: count }, (_, i) => ({
       position: [
-        (Math.random() - 0.5) * 6,
-        (Math.random() - 0.5) * 3.5,
-        -1.5 + Math.random() * -1.0, // Behind particles, in front of bg
+        (Math.random() - 0.5) * 5,
+        (Math.random() - 0.5) * 3,
+        -1.5 + Math.random() * -0.8,
       ] as [number, number, number],
-      scale: 0.15 + Math.random() * 0.25,
+      scale: 0.12 + Math.random() * 0.18,
       rotSpeed: [
-        (Math.random() - 0.5) * 0.3,
-        (Math.random() - 0.5) * 0.4,
         (Math.random() - 0.5) * 0.15,
+        (Math.random() - 0.5) * 0.2,
+        (Math.random() - 0.5) * 0.08,
       ] as [number, number, number],
       seed: Math.random(),
       color: colors[Math.floor(Math.random() * colors.length)],
-      brightness: 0.08 + Math.random() * 0.12, // Very subtle
+      brightness: 0.04 + Math.random() * 0.06, // Very subtle
     }));
   }, [emotion, count]);
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
-
-    // Update shader time
     matsRef.current.forEach((mat) => {
       if (mat) mat.uniforms.uTime.value = t;
     });
-
-    // Rotate each rune mesh
     if (groupRef.current) {
       groupRef.current.children.forEach((child, i) => {
         if (i < runes.length) {
@@ -151,8 +112,7 @@ export default function FloatingRunes({ emotion = 'dormant', count = 6 }: Props)
           child.rotation.x = t * r.rotSpeed[0];
           child.rotation.y = t * r.rotSpeed[1];
           child.rotation.z = t * r.rotSpeed[2];
-          // Gentle float
-          child.position.y = r.position[1] + Math.sin(t * 0.4 + r.seed * 6) * 0.08;
+          child.position.y = r.position[1] + Math.sin(t * 0.3 + r.seed * 6) * 0.06;
         }
       });
     }
@@ -161,11 +121,7 @@ export default function FloatingRunes({ emotion = 'dormant', count = 6 }: Props)
   return (
     <group ref={groupRef}>
       {runes.map((rune, i) => (
-        <mesh
-          key={i}
-          position={rune.position}
-          scale={rune.scale}
-        >
+        <mesh key={i} position={rune.position} scale={rune.scale}>
           <planeGeometry args={[1, 1]} />
           <shaderMaterial
             ref={(el) => { if (el) matsRef.current[i] = el; }}
