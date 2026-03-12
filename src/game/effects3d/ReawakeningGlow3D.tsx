@@ -113,6 +113,7 @@ export default function ReawakeningGlow3D({ progress }: Props) {
         transparent
         depthWrite={false}
         blending={THREE.AdditiveBlending}
+        toneMapped={false}
       />
     </mesh>
   );

@@ -194,9 +194,10 @@ export default function VolumetricLight({ variant = 'title', intensity = 1.0 }: 
         <meshBasicMaterial
           color={variant === 'triumph' ? '#ffd740' : '#ffcc00'}
           transparent
-          opacity={0.04 * intensity}
+          opacity={0.018 * intensity}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
+          toneMapped={false}
         />
       </mesh>
     </group>

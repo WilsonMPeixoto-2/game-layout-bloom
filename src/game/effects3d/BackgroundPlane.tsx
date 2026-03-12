@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useRef, useState, useEffect, useCallback } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
 interface Props {
@@ -38,6 +38,7 @@ const bgFragmentShader = `
 `;
 
 export default function BackgroundPlane({ src }: Props) {
+  const { gl } = useThree();
   const meshARef = useRef<THREE.Mesh>(null);
   const meshBRef = useRef<THREE.Mesh>(null);
   const [activeLayer, setActiveLayer] = useState<'A' | 'B'>('A');
@@ -49,37 +50,36 @@ export default function BackgroundPlane({ src }: Props) {
   const loader = useRef(new THREE.TextureLoader());
   const timeRef = useRef(0);
 
-  useEffect(() => {
-    loader.current.load(src, (tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.minFilter = THREE.LinearMipMapLinearFilter;
-      tex.magFilter = THREE.LinearFilter;
-      tex.anisotropy = 16;
-      tex.generateMipmaps = true;
-      setTexA(tex);
-    });
-  }, []);
+  const configureTexture = useCallback((tex: THREE.Texture) => {
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.magFilter = THREE.LinearFilter;
+    tex.anisotropy = gl.capabilities.getMaxAnisotropy();
+    tex.generateMipmaps = true;
+    return tex;
+  }, [gl]);
 
   useEffect(() => {
-    if (src === prevSrc.current) return;
-    prevSrc.current = src;
+    if (src === prevSrc.current && texA) return;
 
     loader.current.load(src, (tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.minFilter = THREE.LinearMipMapLinearFilter;
-      tex.magFilter = THREE.LinearFilter;
-      tex.anisotropy = 16;
-      tex.generateMipmaps = true;
+      const configured = configureTexture(tex);
 
+      if (!texA) {
+        prevSrc.current = src;
+        setTexA(configured);
+        return;
+      }
+
+      prevSrc.current = src;
       if (activeLayer === 'A') {
-        setTexB(tex);
+        setTexB(configured);
         setActiveLayer('B');
       } else {
-        setTexA(tex);
+        setTexA(configured);
         setActiveLayer('A');
       }
     });
-  }, [src, activeLayer]);
+  }, [src, activeLayer, texA, configureTexture]);
 
   useFrame((_, delta) => {
     timeRef.current += delta;

@@ -274,6 +274,7 @@ export default function GPUParticles({ preset, intensity = 1.0 }: Props) {
         transparent
         depthWrite={false}
         blending={THREE.AdditiveBlending}
+        toneMapped={false}
       />
     </points>
   );
