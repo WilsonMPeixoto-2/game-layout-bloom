@@ -12,7 +12,7 @@ function preloadImage(src: string) {
 }
 
 // Eagerly preload all known backgrounds
-const bgModules = import.meta.glob('/src/assets/bg-*.jpg', { eager: true, as: 'url' });
+const bgModules = import.meta.glob('/src/assets/bg-*.jpg', { eager: true, query: '?url', import: 'default' });
 Object.values(bgModules).forEach((url) => preloadImage(url as string));
 
 interface Props {
