@@ -6,12 +6,13 @@ import GPUParticles from './GPUParticles';
 import VolumetricLight from './VolumetricLight';
 import ReawakeningGlow3D from './ReawakeningGlow3D';
 import PostProcessingStack from './PostProcessingStack';
+import NpcPlane3D from './NpcPlane3D';
 
 import ParallaxCamera from './ParallaxCamera';
 import AtmosphericLayers from './AtmosphericLayers';
 import FloatingRunes from './FloatingRunes';
 import LightningFlash from './LightningFlash';
-import type { ParticlePreset, EmotionalState } from '../types';
+import type { ParticlePreset, EmotionalState, NpcConfig } from '../types';
 
 interface Props {
   background: string;
