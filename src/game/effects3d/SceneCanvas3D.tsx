@@ -6,6 +6,10 @@ import VolumetricLight from './VolumetricLight';
 import ReawakeningGlow3D from './ReawakeningGlow3D';
 import PostProcessingStack from './PostProcessingStack';
 import FilmGrain3D from './FilmGrain3D';
+import ParallaxCamera from './ParallaxCamera';
+import AtmosphericLayers from './AtmosphericLayers';
+import FloatingRunes from './FloatingRunes';
+import LightningFlash from './LightningFlash';
 import type { ParticlePreset, EmotionalState } from '../types';
 
 interface Props {
@@ -16,6 +20,8 @@ interface Props {
   lightVariant?: 'title' | 'triumph' | 'subtle';
   lightIntensity?: number;
   restorationProgress?: number;
+  /** Enable lightning flashes (guardian/storm scenes) */
+  lightning?: boolean;
 }
 
 function SceneCanvas3D({
@@ -26,7 +32,14 @@ function SceneCanvas3D({
   lightVariant,
   lightIntensity = 1.0,
   restorationProgress = 0,
+  lightning = false,
 }: Props) {
+  // Parallax strength varies by scene type
+  const parallaxStrength = variant === 'title' ? 0.18 : variant === 'result' ? 0.12 : 0.15;
+
+  // Rune count varies by emotional intensity
+  const runeCount = emotion === 'triumph' ? 8 : emotion === 'restoration' ? 7 : emotion === 'wonder' ? 6 : 4;
+
   return (
     <Canvas
       style={{
@@ -51,17 +64,29 @@ function SceneCanvas3D({
     >
       <color attach="background" args={['#020810']} />
 
+      {/* Parallax camera reacts to mouse/gyro */}
+      <ParallaxCamera strength={parallaxStrength} smoothing={2.5} breathe />
+
       <Suspense fallback={null}>
         <BackgroundPlane src={background} />
       </Suspense>
 
+      {/* Atmospheric fog layers for depth separation */}
+      <AtmosphericLayers emotion={emotion} />
+
+      {/* Floating mystical runes at mid-depth */}
+      <FloatingRunes emotion={emotion} count={runeCount} />
+
       <GPUParticles preset={particles} intensity={1.0} />
 
-      {/* Always render volumetric light with at least subtle variant */}
+      {/* Volumetric light shafts */}
       <VolumetricLight
         variant={lightVariant || 'subtle'}
         intensity={lightIntensity}
       />
+
+      {/* Lightning for dramatic scenes */}
+      <LightningFlash active={lightning} interval={6} intensity={1.2} />
 
       {restorationProgress > 0 && (
         <ReawakeningGlow3D progress={restorationProgress} />

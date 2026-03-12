@@ -87,6 +87,9 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
   const lightVariant = isTriumph ? 'triumph' as const : (currentScene.emotion === 'wonder' || currentScene.emotion === 'restoration') ? 'title' as const : 'subtle' as const;
   const lightIntensityValue = isTriumph ? 1.3 : isRestoration ? 0.7 + restorationProgress * 0.5 : currentScene.emotion === 'wonder' ? 1.0 : 0.6;
 
+  // Enable lightning for guardian/storm scenes (dormant emotion with sparks = storm)
+  const isStormScene = currentScene.emotion === 'dormant' && currentScene.particles === 'sparks';
+
   return (
     <div className="vn-container">
       <SceneMedia
@@ -97,6 +100,7 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
         lightVariant={lightVariant}
         lightIntensity={lightIntensityValue}
         restorationProgress={isRestoration ? restorationProgress : 0}
+        lightning={isStormScene}
       />
 
       <GameHud
