@@ -23,6 +23,7 @@ interface Props {
   lightVariant?: 'title' | 'triumph' | 'subtle';
   lightIntensity?: number;
   restorationProgress?: number;
+  lightning?: boolean;
 }
 
 function SceneMedia({
@@ -33,6 +34,7 @@ function SceneMedia({
   lightVariant,
   lightIntensity = 1.0,
   restorationProgress = 0,
+  lightning = false,
 }: Props) {
   // NPC fade logic
   const [currentNpc, setCurrentNpc] = useState(npc);
