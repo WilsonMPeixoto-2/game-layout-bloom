@@ -24,6 +24,8 @@ interface Props {
   restorationProgress?: number;
   /** Enable lightning flashes (guardian/storm scenes) */
   lightning?: boolean;
+  /** NPC to render inside the 3D scene */
+  npc?: NpcConfig;
 }
 
 function SceneCanvas3D({
