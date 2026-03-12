@@ -55,7 +55,7 @@ const shaftFragmentShader = `
     vec3 color = mix(uColor1, uColor2, vUv.y * 0.5);
     color = mix(color, uColor3, pow(vUv.y, 2.0) * 0.4);
     
-    float alpha = vFade * hFade * pulse * noiseModulation * uIntensity * 0.12;
+    float alpha = vFade * hFade * pulse * noiseModulation * uIntensity * 0.07;
     
     gl_FragColor = vec4(color, alpha);
     
@@ -82,7 +82,7 @@ const godRayFragment = `
       radial
     );
     
-    float alpha = radial * uIntensity * pulse * 0.05;
+    float alpha = radial * uIntensity * pulse * 0.025;
     
     gl_FragColor = vec4(color, alpha);
     
@@ -155,7 +155,7 @@ export default function VolumetricLight({ variant = 'title', intensity = 1.0 }: 
             fragmentShader={shaftFragmentShader}
             uniforms={{
               uTime: { value: 0 },
-              uIntensity: { value: intensity },
+              uIntensity: { value: intensity * 0.85 },
               uIndex: { value: s.index },
               uColor1: { value: s.color1 },
               uColor2: { value: s.color2 },
@@ -165,6 +165,7 @@ export default function VolumetricLight({ variant = 'title', intensity = 1.0 }: 
             depthWrite={false}
             blending={THREE.AdditiveBlending}
             side={THREE.DoubleSide}
+            toneMapped={false}
           />
         </mesh>
       ))}
@@ -178,11 +179,12 @@ export default function VolumetricLight({ variant = 'title', intensity = 1.0 }: 
           fragmentShader={godRayFragment}
           uniforms={{
             uTime: { value: 0 },
-            uIntensity: { value: intensity * 1.2 },
+            uIntensity: { value: intensity * 0.9 },
           }}
           transparent
           depthWrite={false}
           blending={THREE.AdditiveBlending}
+          toneMapped={false}
         />
       </mesh>
 
@@ -192,9 +194,10 @@ export default function VolumetricLight({ variant = 'title', intensity = 1.0 }: 
         <meshBasicMaterial
           color={variant === 'triumph' ? '#ffd740' : '#ffcc00'}
           transparent
-          opacity={0.04 * intensity}
+          opacity={0.018 * intensity}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
+          toneMapped={false}
         />
       </mesh>
     </group>

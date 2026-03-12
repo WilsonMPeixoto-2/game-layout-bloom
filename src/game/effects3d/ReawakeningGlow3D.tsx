@@ -62,7 +62,7 @@ const glowFragmentShader = `
       float ring = 1.0 - smoothstep(ringRadius - ringWidth, ringRadius, dist);
       ring *= 1.0 - smoothstep(ringRadius, ringRadius + ringWidth, dist);
       float pulse = sin(uTime * 1.2) * 0.1 + 0.9;
-      alpha += ring * p * 0.15 * pulse;
+      alpha += ring * p * 0.1 * pulse;
       color = mix(color, white, ring * 0.3);
     }
     
@@ -71,14 +71,14 @@ const glowFragmentShader = `
       float pulse2 = sin(uTime * 0.8 + 1.0) * 0.15 + 0.85;
       float cyanMix = (p - 0.5) * 2.0;
       color = mix(color, cyan, outerGlow * cyanMix * 0.3);
-      alpha += outerGlow * cyanMix * 0.08 * pulse2;
+      alpha += outerGlow * cyanMix * 0.05 * pulse2;
     }
     
     if (p > 0.8) {
       float core = exp(-dist * dist * 12.0);
       float corePulse = sin(uTime * 2.0) * 0.1 + 0.9;
       color = mix(color, white, core * (p - 0.8) * 5.0);
-      alpha += core * (p - 0.8) * 0.4 * corePulse;
+      alpha += core * (p - 0.8) * 0.28 * corePulse;
     }
     
     gl_FragColor = vec4(color, alpha);
@@ -113,6 +113,7 @@ export default function ReawakeningGlow3D({ progress }: Props) {
         transparent
         depthWrite={false}
         blending={THREE.AdditiveBlending}
+        toneMapped={false}
       />
     </mesh>
   );

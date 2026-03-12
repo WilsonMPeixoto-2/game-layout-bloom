@@ -1,5 +1,6 @@
 import { Suspense, memo } from 'react';
 import { Canvas } from '@react-three/fiber';
+import * as THREE from 'three';
 import BackgroundPlane from './BackgroundPlane';
 import GPUParticles from './GPUParticles';
 import VolumetricLight from './VolumetricLight';
@@ -51,8 +52,8 @@ function SceneCanvas3D({
         antialias: true,
         alpha: false,
         powerPreference: 'high-performance',
-        toneMapping: 3, // ACESFilmicToneMapping
-        toneMappingExposure: 1.08,
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: 0.95,
       }}
       camera={{
         position: [0, 0, 2],
@@ -60,7 +61,8 @@ function SceneCanvas3D({
         near: 0.1,
         far: 10,
       }}
-      dpr={[1, 2]}
+      dpr={[1, 1.25]}
+      performance={{ min: 0.6 }}
     >
       <color attach="background" args={['#020810']} />
 
@@ -91,8 +93,6 @@ function SceneCanvas3D({
       {restorationProgress > 0 && (
         <ReawakeningGlow3D progress={restorationProgress} />
       )}
-
-      
 
       <PostProcessingStack emotion={emotion} variant={variant} />
     </Canvas>
