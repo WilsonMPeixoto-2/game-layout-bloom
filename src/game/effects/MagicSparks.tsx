@@ -5,24 +5,21 @@ interface Props {
   colors?: string[];
 }
 
-/**
- * MagicSparks — pure CSS animations to prevent flickering.
- */
 function MagicSparks({
-  count = 80,
-  colors = ['#ffcc00', '#ea80fc', '#00e5ff', '#ff9e40', '#00e676'],
+  count = 140,
+  colors = ['#ffcc00', '#ea80fc', '#00e5ff', '#ff9e40', '#00e676', '#d500f9'],
 }: Props) {
   const sparks = useMemo(() =>
     Array.from({ length: count }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
-      y: 55 + Math.random() * 45,
-      size: 2 + Math.random() * 5,
-      duration: 3 + Math.random() * 7,
-      delay: Math.random() * 10,
+      y: 40 + Math.random() * 60,
+      size: 2.5 + Math.random() * 7,
+      duration: 2.5 + Math.random() * 6,
+      delay: Math.random() * 8,
       color: colors[Math.floor(Math.random() * colors.length)],
-      riseHeight: -(100 + Math.random() * 160),
-      sway: -40 + Math.random() * 80,
+      riseHeight: -(120 + Math.random() * 220),
+      sway: -60 + Math.random() * 120,
     })),
   [count, colors]);
 
@@ -31,8 +28,8 @@ function MagicSparks({
       <style>{`
         @keyframes spark-rise {
           0% { opacity: 0; transform: translate(0, 0) scale(0.4); }
-          20% { opacity: 0.95; transform: translate(calc(var(--spark-sway) * 0.3), calc(var(--spark-rise) * 0.3)) scale(1.3); }
-          80% { opacity: 0.75; }
+          20% { opacity: 1; transform: translate(calc(var(--spark-sway) * 0.3), calc(var(--spark-rise) * 0.3)) scale(1.5); }
+          80% { opacity: 0.8; }
           100% { opacity: 0; transform: translate(var(--spark-sway), var(--spark-rise)) scale(0.2); }
         }
       `}</style>
@@ -47,10 +44,11 @@ function MagicSparks({
             height: s.size,
             borderRadius: '50%',
             background: s.color,
-            boxShadow: `0 0 ${s.size * 5}px ${s.color}, 0 0 ${s.size * 12}px ${s.color}50`,
+            boxShadow: `0 0 ${s.size * 6}px ${s.color}, 0 0 ${s.size * 16}px ${s.color}70`,
             ['--spark-rise' as string]: `${s.riseHeight}px`,
             ['--spark-sway' as string]: `${s.sway}px`,
             animation: `spark-rise ${s.duration}s ${s.delay}s ease-out infinite`,
+            willChange: 'transform, opacity',
           } as React.CSSProperties}
         />
       ))}
