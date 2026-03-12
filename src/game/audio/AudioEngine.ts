@@ -161,7 +161,7 @@ export class AudioEngine {
     intervals: number[],
     speed: number,
     filter: BiquadFilterNode,
-    gain: number = 0.10,
+    gain: number = 0.18,
   ): void {
     if (!this.ctx) return;
     let step = 0;
