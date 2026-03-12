@@ -39,7 +39,7 @@ function SceneCanvas3D({
         alpha: false,
         powerPreference: 'high-performance',
         toneMapping: 3, // ACESFilmicToneMapping
-        toneMappingExposure: 1.1,
+        toneMappingExposure: 1.2,
       }}
       camera={{
         position: [0, 0, 2],
@@ -57,9 +57,11 @@ function SceneCanvas3D({
 
       <GPUParticles preset={particles} intensity={1.0} />
 
-      {lightVariant && (
-        <VolumetricLight variant={lightVariant} intensity={lightIntensity} />
-      )}
+      {/* Always render volumetric light with at least subtle variant */}
+      <VolumetricLight
+        variant={lightVariant || 'subtle'}
+        intensity={lightIntensity}
+      />
 
       {restorationProgress > 0 && (
         <ReawakeningGlow3D progress={restorationProgress} />

@@ -25,7 +25,7 @@ export default function ToolkitScene({ selected, toggleTool, onNext, onBack }: P
         emotion="preparation"
         variant="story"
         lightVariant="subtle"
-        lightIntensity={0.5}
+        lightIntensity={0.9}
       />
       <div className="vn-bottom-gradient" />
 
