@@ -106,7 +106,7 @@ export default function VolumetricLight({ variant = 'title', intensity = 1.0 }: 
   const materialsRef = useRef<THREE.ShaderMaterial[]>([]);
   const godRayMatRef = useRef<THREE.ShaderMaterial>(null);
 
-  const shaftCount = variant === 'triumph' ? 14 : variant === 'title' ? 9 : 5;
+  const shaftCount = variant === 'triumph' ? 7 : variant === 'title' ? 5 : 3;
 
   const shafts = useMemo(() => {
     const configs = {

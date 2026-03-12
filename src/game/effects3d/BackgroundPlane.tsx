@@ -42,21 +42,18 @@ const bgFragmentShader = `
     vec4 tex = texture2D(uTexture, uv);
     vec3 color = tex.rgb;
     
-    // Boost saturation slightly for OLED vibrancy
+    // Subtle saturation for OLED vibrancy
     float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
-    color = mix(vec3(luma), color, 1.25);
+    color = mix(vec3(luma), color, 1.1);
     
-    // Warm highlight lift
-    color += vec3(0.02, 0.01, 0.0) * (1.0 - luma);
+    // Gentle warm lift in shadows
+    color += vec3(0.01, 0.005, 0.0) * (1.0 - luma);
     
-    // Subtle contrast boost
-    color = pow(color, vec3(1.05));
+    // Filmic tone mapping (gentle)
+    color = filmicToneMap(color * 1.05);
     
-    // Filmic tone mapping
-    color = filmicToneMap(color * 1.15);
-    
-    // Slight blue shadows for cinema look
-    color.b += (1.0 - luma) * 0.015;
+    // Subtle blue shadows for cinema look
+    color.b += (1.0 - luma) * 0.008;
     
     gl_FragColor = vec4(color, uOpacity);
   }

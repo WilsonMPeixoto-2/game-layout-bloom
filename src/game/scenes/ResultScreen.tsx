@@ -36,7 +36,7 @@ export default function ResultScreen({ result, onRestart }: Props) {
         emotion="triumph"
         variant="result"
         lightVariant="triumph"
-        lightIntensity={2.0}
+        lightIntensity={1.2}
       />
 
       <motion.div

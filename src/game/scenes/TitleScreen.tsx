@@ -16,7 +16,7 @@ export default function TitleScreen({ onStart }: Props) {
         emotion="wonder"
         variant="title"
         lightVariant="title"
-        lightIntensity={1.8}
+        lightIntensity={1.0}
       />
 
       <motion.div

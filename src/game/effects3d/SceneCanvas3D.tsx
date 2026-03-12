@@ -39,7 +39,7 @@ function SceneCanvas3D({
         alpha: false,
         powerPreference: 'high-performance',
         toneMapping: 3, // ACESFilmicToneMapping
-        toneMappingExposure: 1.2,
+        toneMappingExposure: 1.0,
       }}
       camera={{
         position: [0, 0, 2],
