@@ -61,7 +61,7 @@ function SceneMedia({
 
   return (
     <>
-      {/* R3F Canvas: background, particles, volumetric light, post-processing */}
+      {/* R3F Canvas: background, NPC, particles, volumetric light, post-processing */}
       <SceneCanvas3D
         background={background}
         particles={particles}
@@ -71,20 +71,8 @@ function SceneMedia({
         lightIntensity={lightIntensity}
         restorationProgress={restorationProgress}
         lightning={lightning}
+        npc={npcVisible ? currentNpc : undefined}
       />
-
-      {/* NPC sprites remain as HTML overlay */}
-      {currentNpc && (
-        <div
-          className={`vn-npc vn-npc-${currentNpc.position || 'right'}`}
-          style={{
-            opacity: npcVisible ? 1 : 0,
-            transition: 'opacity 0.6s ease-out',
-          }}
-        >
-          <img src={currentNpc.image} alt={currentNpc.name} className="vn-npc-image" />
-        </div>
-      )}
 
       {/* Bottom gradient for dialogue readability */}
       <div className="vn-bottom-gradient" />

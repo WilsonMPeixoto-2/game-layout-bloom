@@ -6,12 +6,13 @@ import GPUParticles from './GPUParticles';
 import VolumetricLight from './VolumetricLight';
 import ReawakeningGlow3D from './ReawakeningGlow3D';
 import PostProcessingStack from './PostProcessingStack';
+import NpcPlane3D from './NpcPlane3D';
 
 import ParallaxCamera from './ParallaxCamera';
 import AtmosphericLayers from './AtmosphericLayers';
 import FloatingRunes from './FloatingRunes';
 import LightningFlash from './LightningFlash';
-import type { ParticlePreset, EmotionalState } from '../types';
+import type { ParticlePreset, EmotionalState, NpcConfig } from '../types';
 
 interface Props {
   background: string;
@@ -23,6 +24,8 @@ interface Props {
   restorationProgress?: number;
   /** Enable lightning flashes (guardian/storm scenes) */
   lightning?: boolean;
+  /** NPC to render inside the 3D scene */
+  npc?: NpcConfig;
 }
 
 function SceneCanvas3D({
@@ -34,6 +37,7 @@ function SceneCanvas3D({
   lightIntensity = 1.0,
   restorationProgress = 0,
   lightning = false,
+  npc,
 }: Props) {
   // Parallax strength varies by scene type
   const parallaxStrength = variant === 'title' ? 0.18 : variant === 'result' ? 0.12 : 0.15;
@@ -80,6 +84,9 @@ function SceneCanvas3D({
       <FloatingRunes emotion={emotion} count={runeCount} />
 
       <GPUParticles preset={particles} intensity={1.0} />
+
+      {/* NPC sprite as textured 3D plane — participates in bloom & depth */}
+      <NpcPlane3D npc={npc} />
 
       {/* Volumetric light shafts */}
       <VolumetricLight
