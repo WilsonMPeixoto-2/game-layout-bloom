@@ -9,14 +9,14 @@ interface Props {
 export default function TitleScreen({ onStart }: Props) {
   return (
     <div className="vn-container">
-      {/* R3F Canvas with bloom particles, volumetric light, full post-processing */}
+      {/* Full cinematic R3F canvas with maximum bloom + god rays */}
       <SceneCanvas3D
         background={bgAttract}
         particles="bloom"
         emotion="wonder"
         variant="title"
         lightVariant="title"
-        lightIntensity={1.2}
+        lightIntensity={1.8}
       />
 
       <motion.div

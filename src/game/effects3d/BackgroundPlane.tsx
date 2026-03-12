@@ -1,10 +1,66 @@
 import { useRef, useState, useEffect } from 'react';
-import { useFrame, useLoader } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 interface Props {
   src: string;
 }
+
+// Custom shader for cinematic background with color grading
+const bgVertexShader = `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+const bgFragmentShader = `
+  uniform sampler2D uTexture;
+  uniform float uOpacity;
+  uniform float uTime;
+  
+  varying vec2 vUv;
+  
+  // Cinematic color grading
+  vec3 filmicToneMap(vec3 x) {
+    float a = 2.51;
+    float b = 0.03;
+    float c = 2.43;
+    float d = 0.59;
+    float e = 0.14;
+    return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
+  }
+  
+  void main() {
+    vec2 uv = vUv;
+    
+    // Subtle parallax breathing
+    float breathe = sin(uTime * 0.15) * 0.008;
+    uv = (uv - 0.5) * (1.0 - breathe * 2.0) + 0.5;
+    
+    vec4 tex = texture2D(uTexture, uv);
+    vec3 color = tex.rgb;
+    
+    // Boost saturation slightly for OLED vibrancy
+    float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
+    color = mix(vec3(luma), color, 1.25);
+    
+    // Warm highlight lift
+    color += vec3(0.02, 0.01, 0.0) * (1.0 - luma);
+    
+    // Subtle contrast boost
+    color = pow(color, vec3(1.05));
+    
+    // Filmic tone mapping
+    color = filmicToneMap(color * 1.15);
+    
+    // Slight blue shadows for cinema look
+    color.b += (1.0 - luma) * 0.015;
+    
+    gl_FragColor = vec4(color, uOpacity);
+  }
+`;
 
 export default function BackgroundPlane({ src }: Props) {
   const meshARef = useRef<THREE.Mesh>(null);
@@ -18,25 +74,27 @@ export default function BackgroundPlane({ src }: Props) {
   const loader = useRef(new THREE.TextureLoader());
   const timeRef = useRef(0);
 
-  // Load initial texture
   useEffect(() => {
     loader.current.load(src, (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace;
-      tex.minFilter = THREE.LinearFilter;
+      tex.minFilter = THREE.LinearMipMapLinearFilter;
       tex.magFilter = THREE.LinearFilter;
+      tex.anisotropy = 16;
+      tex.generateMipmaps = true;
       setTexA(tex);
     });
   }, []);
 
-  // Crossfade on src change
   useEffect(() => {
     if (src === prevSrc.current) return;
     prevSrc.current = src;
 
     loader.current.load(src, (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace;
-      tex.minFilter = THREE.LinearFilter;
+      tex.minFilter = THREE.LinearMipMapLinearFilter;
       tex.magFilter = THREE.LinearFilter;
+      tex.anisotropy = 16;
+      tex.generateMipmaps = true;
 
       if (activeLayer === 'A') {
         setTexB(tex);
@@ -49,7 +107,9 @@ export default function BackgroundPlane({ src }: Props) {
   }, [src, activeLayer]);
 
   useFrame((_, delta) => {
-    const speed = 0.8;
+    timeRef.current += delta;
+
+    const speed = 1.2;
     const targetA = activeLayer === 'A' ? 1 : 0;
     const targetB = activeLayer === 'B' ? 1 : 0;
 
@@ -57,23 +117,18 @@ export default function BackgroundPlane({ src }: Props) {
     opacityB.current += (targetB - opacityB.current) * speed * delta * 2;
 
     if (meshARef.current) {
-      const mat = meshARef.current.material as THREE.MeshBasicMaterial;
-      mat.opacity = opacityA.current;
+      const mat = meshARef.current.material as THREE.ShaderMaterial;
+      if (mat.uniforms) {
+        mat.uniforms.uOpacity.value = opacityA.current;
+        mat.uniforms.uTime.value = timeRef.current;
+      }
     }
     if (meshBRef.current) {
-      const mat = meshBRef.current.material as THREE.MeshBasicMaterial;
-      mat.opacity = opacityB.current;
-    }
-
-    // Subtle parallax breathing
-    timeRef.current += delta;
-    const breathe = Math.sin(timeRef.current * 0.15) * 0.02;
-    const scale = 1.05 + breathe;
-    if (meshARef.current) {
-      meshARef.current.scale.set(scale, scale, 1);
-    }
-    if (meshBRef.current) {
-      meshBRef.current.scale.set(scale, scale, 1);
+      const mat = meshBRef.current.material as THREE.ShaderMaterial;
+      if (mat.uniforms) {
+        mat.uniforms.uOpacity.value = opacityB.current;
+        mat.uniforms.uTime.value = timeRef.current;
+      }
     }
   });
 
@@ -81,25 +136,33 @@ export default function BackgroundPlane({ src }: Props) {
     <>
       {texA && (
         <mesh ref={meshARef} position={[0, 0, -2]}>
-          <planeGeometry args={[6.5, 4.5]} />
-          <meshBasicMaterial
-            map={texA}
+          <planeGeometry args={[7, 5]} />
+          <shaderMaterial
+            vertexShader={bgVertexShader}
+            fragmentShader={bgFragmentShader}
+            uniforms={{
+              uTexture: { value: texA },
+              uOpacity: { value: 1 },
+              uTime: { value: 0 },
+            }}
             transparent
-            opacity={1}
             depthWrite={false}
-            toneMapped={false}
           />
         </mesh>
       )}
       {texB && (
         <mesh ref={meshBRef} position={[0, 0, -1.99]}>
-          <planeGeometry args={[6.5, 4.5]} />
-          <meshBasicMaterial
-            map={texB}
+          <planeGeometry args={[7, 5]} />
+          <shaderMaterial
+            vertexShader={bgVertexShader}
+            fragmentShader={bgFragmentShader}
+            uniforms={{
+              uTexture: { value: texB },
+              uOpacity: { value: 0 },
+              uTime: { value: 0 },
+            }}
             transparent
-            opacity={0}
             depthWrite={false}
-            toneMapped={false}
           />
         </mesh>
       )}

@@ -35,8 +35,10 @@ export default function AvatarSetup({ onSelect, onBack }: Props) {
       <SceneCanvas3D
         background={bgAvatar}
         particles="sparks"
-        emotion="preparation"
+        emotion="wonder"
         variant="story"
+        lightVariant="title"
+        lightIntensity={1.0}
       />
 
       <div className="avatar-setup-layout">
