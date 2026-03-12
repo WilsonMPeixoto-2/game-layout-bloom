@@ -95,7 +95,7 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
         particles={currentScene.particles || 'dust'}
         emotion={currentScene.emotion}
         lightVariant={lightVariant}
-        lightIntensity={isTriumph ? 1.5 : isRestoration ? 0.8 + restorationProgress * 0.7 : 0.6}
+        lightIntensity={lightIntensityValue}
         restorationProgress={isRestoration ? restorationProgress : 0}
       />
 
