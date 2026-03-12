@@ -116,6 +116,20 @@ export default function ResultScreen({ result, onRestart }: Props) {
             Jogar Novamente
           </button>
         </motion.div>
+
+        <motion.div
+          style={{ marginTop: 32, textAlign: 'center', opacity: 0.6 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.6 }}
+          transition={{ delay: 2.5, duration: 1 }}
+        >
+          <p style={{ fontSize: '0.75rem', color: 'hsl(var(--foreground))', lineHeight: 1.6, letterSpacing: '0.02em' }}>
+            Produzido por Wilson Malafaia Peixoto
+          </p>
+          <p style={{ fontSize: '0.7rem', color: 'hsl(var(--foreground))', opacity: 0.8 }}>
+            SME - RJ
+          </p>
+        </motion.div>
       </motion.div>
     </div>
   );
