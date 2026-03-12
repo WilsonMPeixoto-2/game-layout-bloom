@@ -82,7 +82,7 @@ const godRayFragment = `
       radial
     );
     
-    float alpha = radial * uIntensity * pulse * 0.05;
+    float alpha = radial * uIntensity * pulse * 0.025;
     
     gl_FragColor = vec4(color, alpha);
     
