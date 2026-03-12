@@ -55,9 +55,9 @@ const npcFragmentShader = `
 
 // Position mapping: where the NPC sits in 3D space
 const POSITION_MAP: Record<string, { x: number; y: number; z: number }> = {
-  left:   { x: -1.4, y: -0.35, z: -0.6 },
-  right:  { x:  1.4, y: -0.35, z: -0.6 },
-  center: { x:  0.0, y: -0.35, z: -0.5 },
+  left:   { x: -0.8, y: -0.35, z: -0.5 },
+  right:  { x:  0.8, y: -0.35, z: -0.5 },
+  center: { x:  0.0, y: -0.35, z: -0.4 },
 };
 
 // Rim glow colors per emotion context
