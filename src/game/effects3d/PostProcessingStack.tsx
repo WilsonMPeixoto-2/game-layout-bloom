@@ -12,29 +12,29 @@ const EMOTION_CONFIGS: Record<string, {
   bloomSmoothing: number;
 }> = {
   dormant: {
-    bloomIntensity: 0.3,
-    bloomThreshold: 0.85,
-    bloomSmoothing: 0.4,
+    bloomIntensity: 0.22,
+    bloomThreshold: 0.92,
+    bloomSmoothing: 0.35,
   },
   wonder: {
-    bloomIntensity: 0.5,
-    bloomThreshold: 0.78,
-    bloomSmoothing: 0.5,
+    bloomIntensity: 0.3,
+    bloomThreshold: 0.9,
+    bloomSmoothing: 0.4,
   },
   preparation: {
-    bloomIntensity: 0.4,
-    bloomThreshold: 0.82,
-    bloomSmoothing: 0.45,
+    bloomIntensity: 0.26,
+    bloomThreshold: 0.91,
+    bloomSmoothing: 0.38,
   },
   restoration: {
-    bloomIntensity: 0.6,
-    bloomThreshold: 0.75,
-    bloomSmoothing: 0.5,
+    bloomIntensity: 0.35,
+    bloomThreshold: 0.88,
+    bloomSmoothing: 0.42,
   },
   triumph: {
-    bloomIntensity: 0.8,
-    bloomThreshold: 0.7,
-    bloomSmoothing: 0.55,
+    bloomIntensity: 0.5,
+    bloomThreshold: 0.84,
+    bloomSmoothing: 0.48,
   },
 };
 

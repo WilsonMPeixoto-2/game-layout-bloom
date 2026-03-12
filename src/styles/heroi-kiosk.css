@@ -131,16 +131,16 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 35%;
+  height: 30%;
   z-index: 4;
   pointer-events: none;
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(2, 8, 16, 0.1) 30%,
-    rgba(2, 8, 16, 0.4) 60%,
-    rgba(2, 8, 16, 0.7) 85%,
-    rgba(2, 8, 16, 0.8) 100%
+    rgba(2, 8, 16, 0.06) 35%,
+    rgba(2, 8, 16, 0.25) 62%,
+    rgba(2, 8, 16, 0.5) 85%,
+    rgba(2, 8, 16, 0.65) 100%
   );
 }
 

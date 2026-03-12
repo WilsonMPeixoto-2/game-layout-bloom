@@ -5,7 +5,7 @@ import GPUParticles from './GPUParticles';
 import VolumetricLight from './VolumetricLight';
 import ReawakeningGlow3D from './ReawakeningGlow3D';
 import PostProcessingStack from './PostProcessingStack';
-import FilmGrain3D from './FilmGrain3D';
+
 import ParallaxCamera from './ParallaxCamera';
 import AtmosphericLayers from './AtmosphericLayers';
 import FloatingRunes from './FloatingRunes';
