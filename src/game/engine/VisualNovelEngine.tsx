@@ -85,7 +85,7 @@ export default function VisualNovelEngine({ selectedTools, avatarImage, onComple
 
   // Determine light variant based on scene state
   const lightVariant = isTriumph ? 'triumph' as const : (currentScene.emotion === 'wonder' || currentScene.emotion === 'restoration') ? 'title' as const : 'subtle' as const;
-  const lightIntensityValue = isTriumph ? 2.0 : isRestoration ? 1.0 + restorationProgress * 1.0 : currentScene.emotion === 'wonder' ? 1.4 : 0.8;
+  const lightIntensityValue = isTriumph ? 1.3 : isRestoration ? 0.7 + restorationProgress * 0.5 : currentScene.emotion === 'wonder' ? 1.0 : 0.6;
 
   return (
     <div className="vn-container">
