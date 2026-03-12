@@ -25,9 +25,9 @@ export default function PostProcessingStack({ emotion = 'dormant', variant = 'st
     <EffectComposer multisampling={0}>
       <Bloom
         intensity={config.bloomIntensity * bloomMultiplier}
-        luminanceThreshold={1}
-        luminanceSmoothing={0.05}
-        mipmapBlur={false}
+        luminanceThreshold={0.85}
+        luminanceSmoothing={0.03}
+        mipmapBlur
       />
       <Vignette
         eskil={false}
