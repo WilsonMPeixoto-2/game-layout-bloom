@@ -127,7 +127,7 @@ export class AudioEngine {
       this.droneGain.connect(this.masterGain);
 
       this.sfxGain = this.ctx.createGain();
-      this.sfxGain.gain.value = 0.85;
+      this.sfxGain.gain.value = 1.0;
       this.sfxGain.connect(this.masterGain);
 
       this.convolver = this.createReverb(4);
