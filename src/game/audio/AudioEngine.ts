@@ -18,60 +18,60 @@ const DRONE_CONFIGS: Record<EmotionalState, DroneConfig> = {
   dormant: {
     frequencies: [55, 82.41, 110, 165],
     waveforms: ['sine', 'triangle', 'sine', 'sine'],
-    gainLevels: [0.22, 0.16, 0.10, 0.07],
-    filterFreq: 800,
+    gainLevels: [0.35, 0.25, 0.18, 0.12],
+    filterFreq: 900,
     reverbDecay: 5,
     melody: [0, 3, 7, 3, 0, -2, 0, 3],
     melodySpeed: 1.2,
-    melodyGain: 0.06,
+    melodyGain: 0.12,
   },
   wonder: {
     frequencies: [130.81, 196, 261.63, 329.63, 392],
     waveforms: ['sine', 'triangle', 'sine', 'sine', 'sine'],
-    gainLevels: [0.22, 0.16, 0.13, 0.10, 0.07],
-    filterFreq: 2400,
+    gainLevels: [0.35, 0.26, 0.20, 0.16, 0.12],
+    filterFreq: 2800,
     reverbDecay: 4,
     arpeggio: [0, 7, 12, 16, 19, 24, 19, 16],
     arpeggioSpeed: 0.45,
     melody: [0, 4, 7, 12, 11, 7, 4, 0],
     melodySpeed: 0.9,
-    melodyGain: 0.10,
+    melodyGain: 0.18,
   },
   preparation: {
     frequencies: [110, 164.81, 220, 277.18, 330],
     waveforms: ['sine', 'triangle', 'sine', 'sine', 'sine'],
-    gainLevels: [0.20, 0.14, 0.12, 0.09, 0.06],
-    filterFreq: 2000,
+    gainLevels: [0.32, 0.24, 0.18, 0.14, 0.10],
+    filterFreq: 2400,
     reverbDecay: 3,
     arpeggio: [0, 3, 7, 12, 15, 12, 7, 3],
     arpeggioSpeed: 0.35,
     melody: [0, 5, 7, 12, 10, 7, 5, 3],
     melodySpeed: 0.7,
-    melodyGain: 0.08,
+    melodyGain: 0.15,
   },
   restoration: {
     frequencies: [146.83, 220, 293.66, 369.99, 440],
     waveforms: ['sine', 'triangle', 'sine', 'sine', 'sine'],
-    gainLevels: [0.22, 0.16, 0.12, 0.09, 0.07],
-    filterFreq: 2800,
+    gainLevels: [0.35, 0.26, 0.20, 0.15, 0.11],
+    filterFreq: 3200,
     reverbDecay: 3.5,
     arpeggio: [0, 4, 7, 11, 12, 16, 12, 11],
     arpeggioSpeed: 0.3,
     melody: [0, 4, 7, 12, 16, 12, 7, 4],
     melodySpeed: 0.6,
-    melodyGain: 0.09,
+    melodyGain: 0.16,
   },
   triumph: {
     frequencies: [196, 261.63, 329.63, 392, 523.25],
     waveforms: ['sine', 'triangle', 'sine', 'sine', 'sine'],
-    gainLevels: [0.24, 0.18, 0.14, 0.10, 0.08],
-    filterFreq: 3500,
+    gainLevels: [0.38, 0.28, 0.22, 0.16, 0.12],
+    filterFreq: 4000,
     reverbDecay: 4,
     arpeggio: [0, 4, 7, 12, 16, 19, 24, 19],
     arpeggioSpeed: 0.25,
     melody: [0, 7, 12, 16, 19, 24, 19, 16, 12, 7],
     melodySpeed: 0.5,
-    melodyGain: 0.12,
+    melodyGain: 0.20,
   },
 };
 
@@ -100,7 +100,7 @@ export class AudioEngine {
   private convolver: ConvolverNode | null = null;
   private currentState: EmotionalState | null = null;
   private crossfadeDuration = 2.5;
-  private _masterVolume = 0.92;
+  private _masterVolume = 1.0;
   private unlocked = false;
   private arpeggioTimers: number[] = [];
   private compressor: DynamicsCompressorNode | null = null;
@@ -111,11 +111,11 @@ export class AudioEngine {
       this.ctx = new AudioContext();
 
       this.compressor = this.ctx.createDynamicsCompressor();
-      this.compressor.threshold.value = -10;
-      this.compressor.knee.value = 8;
-      this.compressor.ratio.value = 5;
-      this.compressor.attack.value = 0.003;
-      this.compressor.release.value = 0.2;
+      this.compressor.threshold.value = -6;
+      this.compressor.knee.value = 6;
+      this.compressor.ratio.value = 6;
+      this.compressor.attack.value = 0.002;
+      this.compressor.release.value = 0.15;
       this.compressor.connect(this.ctx.destination);
 
       this.masterGain = this.ctx.createGain();
@@ -127,7 +127,7 @@ export class AudioEngine {
       this.droneGain.connect(this.masterGain);
 
       this.sfxGain = this.ctx.createGain();
-      this.sfxGain.gain.value = 0.85;
+      this.sfxGain.gain.value = 1.0;
       this.sfxGain.connect(this.masterGain);
 
       this.convolver = this.createReverb(4);
@@ -161,7 +161,7 @@ export class AudioEngine {
     intervals: number[],
     speed: number,
     filter: BiquadFilterNode,
-    gain: number = 0.10,
+    gain: number = 0.18,
   ): void {
     if (!this.ctx) return;
     let step = 0;
@@ -258,7 +258,7 @@ export class AudioEngine {
     }, speed * 500);
   }
 
-  async transitionTo(state: EmotionalState, volume = 0.8): Promise<void> {
+  async transitionTo(state: EmotionalState, volume = 1.0): Promise<void> {
     if (!this.unlocked || !this.ctx || !this.droneGain) return;
     if (state === this.currentState) return;
 
