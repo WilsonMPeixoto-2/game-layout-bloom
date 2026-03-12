@@ -10,26 +10,27 @@ interface Props {
   intensity?: number;
 }
 
-function ParticleLayer({ preset, intensity = 0.5 }: Props) {
+function ParticleLayer({ preset, intensity = 0.7 }: Props) {
   switch (preset) {
     case 'dust':
-      return <FloatingDust count={40} />;
+      return <FloatingDust count={160} />;
     case 'sparks':
-      return <MagicSparks count={30} />;
+      return <MagicSparks count={120} />;
     case 'energy':
-      return <EnergyFlow count={40} intensity={intensity} />;
+      return <EnergyFlow count={100} intensity={intensity} />;
     case 'bloom':
       return (
         <>
-          <FloatingDust count={25} color="#ea80fc" opacity={0.25} />
-          <MagicSparks count={20} />
+          <FloatingDust count={120} color="#ea80fc" opacity={0.45} />
+          <MagicSparks count={80} />
         </>
       );
     case 'triumph':
       return (
         <>
-          <TriumphBurst count={60} />
-          <FloatingDust count={30} color="#ffcc00" opacity={0.5} />
+          <TriumphBurst count={150} />
+          <FloatingDust count={100} color="#ffcc00" opacity={0.7} />
+          <MagicSparks count={60} colors={['#ffcc00', '#ffe566', '#00e5ff']} />
         </>
       );
     case 'none':
