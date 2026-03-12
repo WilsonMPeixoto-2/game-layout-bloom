@@ -78,7 +78,7 @@ const glowFragmentShader = `
       float core = exp(-dist * dist * 12.0);
       float corePulse = sin(uTime * 2.0) * 0.1 + 0.9;
       color = mix(color, white, core * (p - 0.8) * 5.0);
-      alpha += core * (p - 0.8) * 0.4 * corePulse;
+      alpha += core * (p - 0.8) * 0.28 * corePulse;
     }
     
     gl_FragColor = vec4(color, alpha);
