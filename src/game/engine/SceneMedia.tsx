@@ -70,6 +70,7 @@ function SceneMedia({
         lightVariant={lightVariant}
         lightIntensity={lightIntensity}
         restorationProgress={restorationProgress}
+        lightning={lightning}
       />
 
       {/* NPC sprites remain as HTML overlay */}
