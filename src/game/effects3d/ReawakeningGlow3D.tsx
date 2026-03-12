@@ -71,7 +71,7 @@ const glowFragmentShader = `
       float pulse2 = sin(uTime * 0.8 + 1.0) * 0.15 + 0.85;
       float cyanMix = (p - 0.5) * 2.0;
       color = mix(color, cyan, outerGlow * cyanMix * 0.3);
-      alpha += outerGlow * cyanMix * 0.08 * pulse2;
+      alpha += outerGlow * cyanMix * 0.05 * pulse2;
     }
     
     if (p > 0.8) {
