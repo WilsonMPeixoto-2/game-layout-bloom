@@ -83,11 +83,11 @@ const EMOTION_FOG: Record<string, {
   opacity: number;
   speed: number;
 }> = {
-  dormant: { color: new THREE.Color('#0a1628'), opacity: 0.12, speed: 0.015 },
-  wonder: { color: new THREE.Color('#1a0a30'), opacity: 0.10, speed: 0.02 },
-  preparation: { color: new THREE.Color('#0a2018'), opacity: 0.08, speed: 0.018 },
-  restoration: { color: new THREE.Color('#120a28'), opacity: 0.10, speed: 0.025 },
-  triumph: { color: new THREE.Color('#1a1200'), opacity: 0.06, speed: 0.03 },
+  dormant: { color: new THREE.Color('#0a1628'), opacity: 0.035, speed: 0.012 },
+  wonder: { color: new THREE.Color('#1a0a30'), opacity: 0.03, speed: 0.016 },
+  preparation: { color: new THREE.Color('#0a2018'), opacity: 0.025, speed: 0.014 },
+  restoration: { color: new THREE.Color('#120a28'), opacity: 0.03, speed: 0.02 },
+  triumph: { color: new THREE.Color('#1a1200'), opacity: 0.02, speed: 0.022 },
 };
 
 export default function AtmosphericLayers({ emotion = 'dormant' }: Props) {
@@ -114,7 +114,7 @@ export default function AtmosphericLayers({ emotion = 'dormant' }: Props) {
             uOpacity: { value: fogConfig.opacity },
             uColor: { value: fogConfig.color },
             uSpeed: { value: fogConfig.speed },
-            uDensity: { value: 2.0 },
+            uDensity: { value: 1.35 },
           }}
           transparent
           depthWrite={false}

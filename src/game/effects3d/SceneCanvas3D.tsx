@@ -5,7 +5,7 @@ import GPUParticles from './GPUParticles';
 import VolumetricLight from './VolumetricLight';
 import ReawakeningGlow3D from './ReawakeningGlow3D';
 import PostProcessingStack from './PostProcessingStack';
-import FilmGrain3D from './FilmGrain3D';
+
 import ParallaxCamera from './ParallaxCamera';
 import AtmosphericLayers from './AtmosphericLayers';
 import FloatingRunes from './FloatingRunes';
@@ -52,7 +52,7 @@ function SceneCanvas3D({
         alpha: false,
         powerPreference: 'high-performance',
         toneMapping: 3, // ACESFilmicToneMapping
-        toneMappingExposure: 1.0,
+        toneMappingExposure: 1.08,
       }}
       camera={{
         position: [0, 0, 2],
@@ -92,7 +92,7 @@ function SceneCanvas3D({
         <ReawakeningGlow3D progress={restorationProgress} />
       )}
 
-      <FilmGrain3D />
+      
 
       <PostProcessingStack emotion={emotion} variant={variant} />
     </Canvas>
