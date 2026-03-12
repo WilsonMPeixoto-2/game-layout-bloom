@@ -37,6 +37,7 @@ function SceneCanvas3D({
   lightIntensity = 1.0,
   restorationProgress = 0,
   lightning = false,
+  npc,
 }: Props) {
   // Parallax strength varies by scene type
   const parallaxStrength = variant === 'title' ? 0.18 : variant === 'result' ? 0.12 : 0.15;
