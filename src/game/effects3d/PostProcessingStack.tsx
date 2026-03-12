@@ -41,7 +41,7 @@ const EMOTION_CONFIGS: Record<string, {
 export default function PostProcessingStack({ emotion = 'dormant', variant = 'story' }: Props) {
   const config = EMOTION_CONFIGS[emotion] || EMOTION_CONFIGS.dormant;
 
-  const bloomMultiplier = variant === 'title' ? 1.3 : variant === 'result' ? 1.2 : 1.0;
+  const bloomMultiplier = variant === 'title' ? 1.1 : variant === 'result' ? 1.08 : 1.0;
 
   return (
     <EffectComposer multisampling={0}>

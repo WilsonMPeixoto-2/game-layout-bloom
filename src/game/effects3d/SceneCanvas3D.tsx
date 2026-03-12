@@ -92,7 +92,7 @@ function SceneCanvas3D({
         <ReawakeningGlow3D progress={restorationProgress} />
       )}
 
-      <FilmGrain3D />
+      
 
       <PostProcessingStack emotion={emotion} variant={variant} />
     </Canvas>

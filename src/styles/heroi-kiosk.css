@@ -146,14 +146,7 @@
 
 /* ===== CHROMATIC ABERRATION EDGE (subtle) ===== */
 .vn-container::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: 
-    radial-gradient(ellipse at 0% 50%, rgba(0, 100, 255, 0.03), transparent 40%),
-    radial-gradient(ellipse at 100% 50%, rgba(255, 50, 0, 0.03), transparent 40%);
+  content: none;
 }
 
 /* ===== NPC SPRITES ===== */

@@ -114,7 +114,7 @@ export default function AtmosphericLayers({ emotion = 'dormant' }: Props) {
             uOpacity: { value: fogConfig.opacity },
             uColor: { value: fogConfig.color },
             uSpeed: { value: fogConfig.speed },
-            uDensity: { value: 2.0 },
+            uDensity: { value: 1.35 },
           }}
           transparent
           depthWrite={false}
