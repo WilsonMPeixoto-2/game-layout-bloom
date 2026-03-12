@@ -155,7 +155,7 @@ export default function VolumetricLight({ variant = 'title', intensity = 1.0 }: 
             fragmentShader={shaftFragmentShader}
             uniforms={{
               uTime: { value: 0 },
-              uIntensity: { value: intensity },
+              uIntensity: { value: intensity * 0.85 },
               uIndex: { value: s.index },
               uColor1: { value: s.color1 },
               uColor2: { value: s.color2 },
@@ -165,6 +165,7 @@ export default function VolumetricLight({ variant = 'title', intensity = 1.0 }: 
             depthWrite={false}
             blending={THREE.AdditiveBlending}
             side={THREE.DoubleSide}
+            toneMapped={false}
           />
         </mesh>
       ))}
