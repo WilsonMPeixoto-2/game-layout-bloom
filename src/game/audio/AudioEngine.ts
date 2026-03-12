@@ -100,7 +100,7 @@ export class AudioEngine {
   private convolver: ConvolverNode | null = null;
   private currentState: EmotionalState | null = null;
   private crossfadeDuration = 2.5;
-  private _masterVolume = 0.92;
+  private _masterVolume = 1.0;
   private unlocked = false;
   private arpeggioTimers: number[] = [];
   private compressor: DynamicsCompressorNode | null = null;
